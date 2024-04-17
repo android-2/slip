@@ -1,0 +1,816 @@
+                               slip 1
+Q. WAP in go language to accept user choice and print answer of using arithmetical 
+ operators
+==>package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var choice int
+
+	fmt.Println("Select an operation:")
+	fmt.Println("1. Addition")
+	fmt.Println("2. Subtraction")
+	fmt.Println("3. Multiplication")
+	fmt.Println("4. Division")
+	fmt.Print("Enter your choice (1-4): ")
+	fmt.Scanln(&choice)
+
+	var num1, num2 float64
+	fmt.Println("Enter two numbers:")
+	fmt.Scanln(&num1, &num2)
+
+	switch choice {
+	case 1:
+		fmt.Printf("Result of addition: %.2f\n", num1+num2)
+	case 2:
+		fmt.Printf("Result of subtraction: %.2f\n", num1-num2)
+	case 3:
+		fmt.Printf("Result of multiplication: %.2f\n", num1*num2)
+	case 4:
+		if num2 != 0 {
+			fmt.Printf("Result of division: %.2f\n", num1/num2)
+		} else {
+			fmt.Println("Cannot divide by zero.")
+		}
+	default:
+		fmt.Println("Invalid choice.")
+	}
+}
+                      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to accept n student details like roll_no,
+stud_name, mark1,mark2, mark3. Calculate the total and average of
+marks using structure.
+===>
+package main
+
+import "fmt"
+
+type st struct{
+   name string
+   roll int
+   mark1 int
+   mark2 int
+   mark3 int
+}
+
+func main() {
+    const max = 100
+    n := 0
+    fmt.Println("Enter the number of students:")
+    fmt.Scanf("%d", &n)
+    
+    var s [max]st
+    for j := 0; j < n; j++ {
+        fmt.Printf("Enter the name of student %d\n", j+1)
+        fmt.Scan(&s[j].name)
+        fmt.Printf("Enter the roll number of student %d\n", j+1)
+        fmt.Scan(&s[j].roll)
+        fmt.Printf("Enter the three subjects marks of student %d\n", j+1)
+        fmt.Scan(&s[j].mark1, &s[j].mark2, &s[j].mark3)
+    }
+    fmt.Println()
+    for i := 0; i < n; i++ {
+        fmt.Printf("The total marks of student %d is %d\n", i+1, s[i].mark1+s[i].mark2+s[i].mark3)
+        fmt.Printf("The average marks of student %d is %d\n", i+1, (s[i].mark1+s[i].mark2+s[i].mark3)/3)
+    }
+}
+
+=================================================================================================================================
+                                             slip2
+ Q1WAP in go language to print Fibonacci series of n terms. 
+==>package main
+
+import "fmt"
+
+func main() {
+    var n int
+    fmt.Println("Enter the number of terms for Fibonacci series:")
+    fmt.Scanln(&n)
+
+    fmt.Println("Fibonacci series:")
+    
+    // First two terms
+    a, b := 0, 1
+    fmt.Print(a, " ", b, " ")
+
+    // Generating Fibonacci series
+    for i := 2; i < n; i++ {
+        next := a + b
+        fmt.Print(next, " ")
+        // Update values for next iteration
+        a = b
+        b = next
+    }
+    fmt.Println()
+}
+                     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to print file information
+==>package main
+
+import (
+    "fmt"
+    "os"
+)
+
+func main() {
+    // Get file information
+    fileInfo, err := os.Stat("example.txt")
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+
+    // Print file information
+    fmt.Println("File Name:", fileInfo.Name())
+    fmt.Println("Size (in bytes):", fileInfo.Size())
+    fmt.Println("Permissions:", fileInfo.Mode())
+    fmt.Println("Last Modified:", fileInfo.ModTime())
+    fmt.Println("Is Directory:", fileInfo.IsDir())
+}
+
+===============================================================================================================================
+                                       slip3
+ Q1WAP in go language using function to check whether accepts number is palindrome or not. 
+==>
+package main
+import "fmt"
+
+func ispalin(a int)int{
+    
+    num:=a
+    sum:=0
+    rem:=0
+    for(num!=0){
+        rem=num%10;
+        sum=rem+(sum*10);
+        num=num/10;
+    }
+    if(sum==a){
+        return 1;
+    }else{
+        return 0;
+    }
+    
+    
+}
+
+func main() {
+    num:=0
+    fmt.Scanf("%d",&num);
+    
+  
+  fmt.Printf("%d ",ispalin(num));
+}
+                                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a Program in GO language to accept n records of employee
+information (eno,ename,salary) and display record of employees
+having maximum salary.
+==>
+package main
+
+import (
+	"fmt"
+)
+
+type Employee struct {
+	eno    int
+	ename  string
+	salary float64
+}
+
+func main() {
+	const maxSize = 100 // Define maximum size for the array
+	var n int
+	fmt.Println("Enter the number of employees (maximum", maxSize, "):")
+	fmt.Scan(&n)
+
+	if n > maxSize {
+		fmt.Println("Number of employees exceeds maximum size. Exiting.")
+		return
+	}
+
+	employees := [maxSize]Employee{} // Declare array of employees
+
+	// Input employee records
+	for i := 0; i < n; i++ {
+		fmt.Printf("Enter details for employee %d:\n", i+1)
+		fmt.Print("Employee Number: ")
+		fmt.Scan(&employees[i].eno)
+		fmt.Print("Employee Name: ")
+		fmt.Scan(&employees[i].ename)
+		fmt.Print("Salary: ")
+		fmt.Scan(&employees[i].salary)
+	}
+
+	// Find maximum salary
+	maxSalary := employees[0].salary
+	for i := 1; i < n; i++ {
+		if employees[i].salary > maxSalary {
+			maxSalary = employees[i].salary
+		}
+	}
+
+	// Display employees with maximum salary
+	fmt.Println("\nEmployees with maximum salary:")
+	for i := 0; i < n; i++ {
+		if employees[i].salary == maxSalary {
+			fmt.Printf("Employee Number: %d\n", employees[i].eno)
+			fmt.Printf("Employee Name: %s\n", employees[i].ename)
+			fmt.Printf("Salary: %.2f\n", employees[i].salary)
+			fmt.Println("--------------------------")
+		}
+	}
+}
+	
+
+=================================================================================================================================
+                                           Slip 4
+Q1)WAP in go language to print recursive sum of digits of given number
+==>
+
+
+package main
+import "fmt"
+
+var sum int=0
+func rsum(a int)int{
+    if a>0{
+        sum+=(a%10);
+        rsum(a/10);
+        
+    }
+    
+    return sum;
+}
+
+func main() {
+  
+  fmt.Printf("%d ",rsum(123));
+}
+                                          xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to sort array elements in
+ascending order.
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func main() {
+	arr := []int{64, 34, 25, 12, 22, 11, 90}
+	fmt.Println("Array before sorting:", arr)
+
+	sort.Ints(arr) // Sort the array elements in ascending order
+
+	fmt.Println("Array after sorting:", arr)
+}
+
+======================================================================================================================
+                                              slip5
+Q1)Write a program in GO language program to create Text file
+==>
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	// Create a file named "example.txt" in the current directory
+	file, err := os.Create("example.txt")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := "Hello, this is a text file created using Go!"
+	_, err = file.WriteString(content)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Text file created successfully!")
+}
+                            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to accept n records of employee
+information (eno,ename,salary) and display records of employees
+having minimum salary
+==>
+package main
+
+import (
+	"fmt"
+)
+
+type Employee struct {
+	eno    int
+	ename  string
+	salary float64
+}
+
+func main() {
+	const maxSize = 100 // Define maximum size for the array
+	var n int
+	fmt.Println("Enter the number of employees (maximum", maxSize, "):")
+	fmt.Scan(&n)
+
+	if n > maxSize {
+		fmt.Println("Number of employees exceeds maximum size. Exiting.")
+		return
+	}
+
+	employees := [maxSize]Employee{} // Declare array of employees
+
+	// Input employee records
+	for i := 0; i < n; i++ {
+		fmt.Printf("Enter details for employee %d:\n", i+1)
+		fmt.Print("Employee Number: ")
+		fmt.Scan(&employees[i].eno)
+		fmt.Print("Employee Name: ")
+		fmt.Scan(&employees[i].ename)
+		fmt.Print("Salary: ")
+		fmt.Scan(&employees[i].salary)
+	}
+
+	// Find minimum salary
+	minSalary := employees[0].salary
+	for i := 1; i < n; i++ {
+		if employees[i].salary < minSalary {
+			minSalary = employees[i].salary
+		}
+	}
+
+	// Display employees with minimum salary
+	fmt.Println("\nEmployees with minimum salary:")
+	for i := 0; i < n; i++ {
+		if employees[i].salary == minSalary {
+			fmt.Printf("Employee Number: %d\n", employees[i].eno)
+			fmt.Printf("Employee Name: %s\n", employees[i].ename)
+			fmt.Printf("Salary: %.2f\n", employees[i].salary)
+			fmt.Println("--------------------------")
+		}
+	}
+}
+
+=============================================================================================================================
+                                               slip 6
+Q1) Write a program in GO language to accept two matrices and
+display its multiplication
+==>
+package main
+
+import "fmt"
+
+func main() {
+	var matrix1 [2][2]int
+	var matrix2 [2][2]int
+	var result [2][2]int
+
+	// Accept elements of first matrix
+	fmt.Println("Enter the elements of the first matrix:")
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 2; j++ {
+			fmt.Printf("Enter element [%d][%d]: ", i+1, j+1)
+			fmt.Scan(&matrix1[i][j])
+		}
+	}
+
+	// Accept elements of second matrix
+	fmt.Println("Enter the elements of the second matrix:")
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 2; j++ {
+			fmt.Printf("Enter element [%d][%d]: ", i+1, j+1)
+			fmt.Scan(&matrix2[i][j])
+		}
+	}
+
+	// Perform matrix multiplication
+	result[0][0] = matrix1[0][0]*matrix2[0][0] + matrix1[0][1]*matrix2[1][0]
+	result[0][1] = matrix1[0][0]*matrix2[0][1] + matrix1[0][1]*matrix2[1][1]
+	result[1][0] = matrix1[1][0]*matrix2[0][0] + matrix1[1][1]*matrix2[1][0]
+	result[1][1] = matrix1[1][0]*matrix2[0][1] + matrix1[1][1]*matrix2[1][1]
+
+	// Display the result matrix
+	fmt.Println("Resultant matrix after multiplication:")
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 2; j++ {
+			fmt.Printf("%d ", result[i][j])
+		}
+		fmt.Println()
+	}
+}
+                          xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to copy all elements of one array
+into another using a method.
+==>package main
+
+import "fmt"
+
+func main() {
+	src := [5]int{1, 2, 3, 4, 5}
+	var dest [5]int
+
+	// Copy elements from source array to destination array
+	for i := 0; i < len(src); i++ {
+		dest[i] = src[i]
+	}
+
+	// Print the copied elements in dest array
+	fmt.Println("Elements copied into dest array:", dest)
+}
+
+===============================================================================================================================
+                                              slip7
+Q1)Write a program in GO language to accept one matrix and display
+its transpose.
+==>package main
+
+import "fmt"
+
+func main() {
+	const rows, cols = 2, 2
+
+	// Define a 2x2 matrix
+	var matrix [rows][cols]int
+
+	// Accept elements of the matrix from the user
+	fmt.Println("Enter the elements of the 2x2 matrix:")
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			fmt.Printf("Enter element [%d][%d]: ", i+1, j+1)
+			fmt.Scan(&matrix[i][j])
+		}
+	}
+
+	// Display the original matrix
+	fmt.Println("\nOriginal Matrix:")
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			fmt.Printf("%d ", matrix[i][j])
+		}
+		fmt.Println()
+	}
+
+	// Display the transpose of the matrix
+	fmt.Println("\nTranspose Matrix:")
+	for i := 0; i < cols; i++ {
+		for j := 0; j < rows; j++ {
+			fmt.Printf("%d ", matrix[j][i])
+		}
+		fmt.Println()
+	}
+}
+                                                       xxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to create structure student. Writea
+method show() whose receiver is a pointer of struct student
+==>package main
+import "fmt"
+
+
+type student struct {
+	name   string
+	rollno int
+}
+
+func (s *student) show() {
+	fmt.Println("Name:", s.name)
+	fmt.Println("Roll No:", s.rollno)
+}
+
+func main() {
+
+	s := student{"John", 101}
+
+	
+	(&s).show() 
+	s.name = "Alice"
+	s.rollno = 102
+
+	
+	s.show()
+}
+
+
+===============================================================================================================================
+                                              slip8
+Q1) Write a program in GO language to accept the book details such
+as BookID, Title, Author, Price. Read and display the details of
+‘n’ number of books
+==>
+package main
+
+import "fmt"
+
+// Define a structure for Book
+type Book struct {
+	BookID int
+	Title  string
+	Author string
+	Price  float64
+}
+
+func main() {
+	var n int
+
+	// Accept the number of books
+	fmt.Println("Enter the number of books:")
+	fmt.Scan(&n)
+
+	// Create a slice to store the details of 'n' books
+	books := make([]Book, n)
+
+	// Accept details of each book
+	for i := 0; i < n; i++ {
+		fmt.Printf("Enter details for book %d:\n", i+1)
+		fmt.Print("BookID: ")
+		fmt.Scan(&books[i].BookID)
+		fmt.Print("Title: ")
+		fmt.Scan(&books[i].Title)
+		fmt.Print("Author: ")
+		fmt.Scan(&books[i].Author)
+		fmt.Print("Price: ")
+		fmt.Scan(&books[i].Price)
+	}
+
+	// Display the details of each book
+	fmt.Println("\nDetails of the books:")
+	for i := 0; i < n; i++ {
+		fmt.Printf("Book %d\n", i+1)
+		fmt.Println("BookID:", books[i].BookID)
+		fmt.Println("Title:", books[i].Title)
+		fmt.Println("Author:", books[i].Author)
+		fmt.Println("Price:", books[i].Price)
+		fmt.Println("-----------------------")
+	}
+}
+                                              xxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to create an interface shape that
+includes area and perimeter. Implements these methods in circle
+and rectangle type
+==>
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+// Define the Shape interface
+type Shape interface {
+	Area() float64
+	Perimeter() float64
+}
+
+// Define the Circle type
+type Circle struct {
+	Radius float64
+}
+
+// Implement Area method for Circle
+func (c Circle) Area() float64 {
+	return math.Pi * c.Radius * c.Radius
+}
+
+// Implement Perimeter method for Circle
+func (c Circle) Perimeter() float64 {
+	return 2 * math.Pi * c.Radius
+}
+
+// Define the Rectangle type
+type Rectangle struct {
+	Length float64
+	Width  float64
+}
+
+// Implement Area method for Rectangle
+func (r Rectangle) Area() float64 {
+	return r.Length * r.Width
+}
+
+// Implement Perimeter method for Rectangle
+func (r Rectangle) Perimeter() float64 {
+	return 2*r.Length + 2*r.Width
+}
+
+func main() {
+	// Create instances of Circle and Rectangle
+	circle := Circle{Radius: 5}
+	rectangle := Rectangle{Length: 4, Width: 6}
+
+	// Call the Area and Perimeter methods for Circle
+	fmt.Println("Circle:")
+	fmt.Printf("Area: %.2f\n", circle.Area())
+	fmt.Printf("Perimeter: %.2f\n", circle.Perimeter())
+
+	// Call the Area and Perimeter methods for Rectangle
+	fmt.Println("\nRectangle:")
+	fmt.Printf("Area: %.2f\n", rectangle.Area())
+	fmt.Printf("Perimeter: %.2f\n", rectangle.Perimeter())
+}
+
+===============================================================================================================================
+                                                  slip9
+Q1). WAP in go language using function to check whether accepts number is palindrome or not. 
+==>
+package main
+import "fmt"
+
+func ispalin(a int)int{
+    
+    num:=a
+    sum:=0
+    rem:=0
+    for(num!=0){
+        rem=num%10;
+        sum=rem+(sum*10);
+        num=num/10;
+    }
+    if(sum==a){
+        return 1;
+    }else{
+        return 0;
+    }
+    
+    
+}
+
+func main() {
+    num:=0
+    fmt.Scanf("%d",&num);
+    
+  
+  fmt.Printf("%d ",ispalin(num));
+}
+                                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+W2)
+==============================================================================================================================
+                                          slip10
+Q)1 Write a program in GO language to create an interface and display
+its values with the help of type assertion.
+==>package main
+
+import (
+	"fmt"
+)
+
+// Define an interface
+type Shape interface {
+	area() float64
+}
+
+// Define a struct for Circle and Rectangle
+type ShapeType struct {
+	shape interface{}
+}
+
+// Implement the area method for Circle
+func (c ShapeType) area() float64 {
+	switch shape := c.shape.(type) {
+	case Circle:
+		return shape.radius * shape.radius * 3.14
+	case Rectangle:
+		return shape.length * shape.width
+	default:
+		return 0
+	}
+}
+
+// Define a struct for Circle
+type Circle struct {
+	radius float64
+}
+
+// Define a struct for Rectangle
+type Rectangle struct {
+	length, width float64
+}
+
+func main() {
+	// Create instances of Circle and Rectangle
+	circle := Circle{radius: 5}
+	rectangle := Rectangle{length: 6, width: 4}
+
+	// Create instances of ShapeType
+	circleShape := ShapeType{shape: circle}
+	rectangleShape := ShapeType{shape: rectangle}
+
+	// Display the areas of Circle and Rectangle
+	fmt.Printf("Circle Area: %.2f\n", circleShape.area())
+	fmt.Printf("Rectangle Area: %.2f\n", rectangleShape.area())
+}
+                                     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2)Write a program in GO language to read and write Fibonacci
+series to the using channel
+==>
+package main
+
+import "fmt"
+
+// Function to generate Fibonacci numbers and send them to a channel
+func fibonacci(ch chan<- int, n int) {
+	a, b := 0, 1
+	for i := 0; i < n; i++ {
+		ch <- a
+		a, b = b, a+b
+	}
+	close(ch) // Close the channel when done sending numbers
+}
+
+// Function to receive Fibonacci numbers from a channel and print them
+func printFibonacci(ch <-chan int) {
+	for num := range ch {
+		fmt.Println(num)
+	}
+}
+
+func main() {
+	// Create a channel to communicate Fibonacci numbers
+	ch := make(chan int)
+
+	// Start a goroutine to generate Fibonacci numbers and send them to the channel
+	go fibonacci(ch, 10) // Generate first 10 Fibonacci numbers
+
+	// Call the function to receive and print Fibonacci numbers
+	printFibonacci(ch)
+}
+
+============================================================================================================================
+slip15
+
+Q1)) Write a program in GO language to create a user defined package
+to find out the area of a rectangle.
+rectangle.go
+package rectangle
+
+// Function to calculate the area of a rectangle
+func Area(length, width float64) float64 {
+    return length * width
+}
+
+main.go
+package main
+
+import (
+    "fmt"
+    "./rectangle" // Import the local package
+)
+
+func main() {
+    length := 5.0
+    width := 3.0
+
+    // Call the Area function from the rectangle package
+    area := rectangle.Area(length, width)
+
+    fmt.Printf("Area of the rectangle with length %.2f and width %.2f = %.2f\n", length, width, area)
+}
+                                        
+==========================================================================================================================
+slip17
+Q1)Write a program in GO language to illustrate the concept of
+returning multiple values from a function. ( Add, Subtract,
+Multiply, Divide)
+==>package main
+import "fmt"
+// Function to perform arithmetic operations and return multiple 
+values
+func arithmeticOperations(a, b float64) (float64, float64, float64, 
+float64) {
+ sum := a + b
+ difference := a - b
+ product := a * b
+ // Check if the second number is not zero to avoid division by 
+zero
+ var division float64
+ if b != 0 {
+ division = a / b
+ } else {
+ division = 0
+ }
+ return sum, difference, product, division
+}
+func main() {
+ var num1, num2 float64
+ // Input two numbers from the user
+ fmt.Print("Enter the first number: ")
+ fmt.Scan(&num1)
+ fmt.Print("Enter the second number: ")
+ fmt.Scan(&num2)
+ // Perform arithmetic operations and capture returned values
+ sum, difference, product, division := arithmeticOperations(num1, 
+num2)
+ // Print the results
+ fmt.Printf("Sum: %.2f\n", sum)
+ fmt.Printf("Difference: %.2f\n", difference)
+ fmt.Printf("Product: %.2f\n", product)
+ fmt.Printf("Division: %.2f\n", division)
+}
+=====================================================================================================================
