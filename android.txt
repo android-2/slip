@@ -1,0 +1,4410 @@
+Android Practical Questions
+1.Create a Simple Application which shows the Life Cycle of Activity.
+XML: <?xml version="1.0" encoding="utf-8"?> <android.support.constraint.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent" tools:context="example.javatpoint.com.activitylifecycle.MainActivity"> <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="Hello World!"
+ app:layout_constraintBottom_toBottomOf="parent"
+ app:layout_constraintLeft_toLeftOf="parent"
+ app:layout_constraintRight_toRightOf="parent"
+ app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
+JAVA: package example.javatpoint.com.activitylifecycle; import android.app.Activity; import android.os.Bundle;import android.util.Log; public class MainActivity extends Activity { @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ Log.d("lifecycle","onCreate invoked");
+ }
+ @Override
+ protected void onStart() {
+ super.onStart();
+ Log.d("lifecycle","onStart invoked");
+ }
+ @Override
+ protected void onResume() {
+ super.onResume();
+ Log.d("lifecycle","onResume invoked");
+ }
+ @Override
+ protected void onPause() {
+ super.onPause();
+ Log.d("lifecycle","onPause invoked");
+ }
+ @Override
+ protected void onStop() {
+ super.onStop();
+ Log.d("lifecycle","onStop invoked");
+ }
+ @Override
+ protected void onRestart() {
+ super.onRestart();
+ Log.d("lifecycle","onRestart invoked");
+ }
+ @Override
+ protected void onDestroy() {
+ super.onDestroy();
+ Log.d("lifecycle","onDestroy invoked");
+ }
+}
+=====================================================================================================================
+2.Create an Android application to demonstrate Progress Dialog Box using
+AsyncTask
+XML:
+<RelativeLayout
+xmlns:android="https://schemas.android.com/apk/res/android"
+xmlns:tools="https://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity" >
+<Button
+android:id="@+id/button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text=" Start ProgressDialog"
+android:layout_alignParentTop="true"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="57dp" />
+</RelativeLayout>
+JAVA:
+package com.journaldev.progressdialog;
+import android.app.ProgressDialog;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+public class MainActivity extends AppCompatActivity {
+Button button;
+ProgressDialog progressDoalog;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+button = (Button) findViewById(R.id.button);
+button.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+progressDoalog = new ProgressDialog(MainActivity.this);
+progressDoalog.setMax(100);
+progressDoalog.setMessage("Its loading....");
+progressDoalog.setTitle("ProgressDialog bar example");
+progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+progressDoalog.show();
+new Thread(new Runnable() {
+@Override
+public void run() {
+try {
+while (progressDoalog.getProgress() <=
+progressDoalog
+.getMax()) {
+Thread.sleep(200);
+handle.sendMessage(handle.obtainMessage());
+if (progressDoalog.getProgress() ==
+progressDoalog
+.getMax()) {
+progressDoalog.dismiss();
+}
+}
+} catch (Exception e) {
+e.printStackTrace();
+}
+}
+}).start();
+}
+Handler handle = new Handler() {
+@Override
+public void handleMessage(Message msg) {
+super.handleMessage(msg);
+progressDoalog.incrementProgressBy(1);
+}
+};
+});
+}
+}
+=====================================================================================================================
+.Create an Android Application that demonstrate DatePicker and
+DatePickerDailog.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/idRLContainer"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<!--on below line we are creating
+a text for our app-->
+<TextView
+android:id="@+id/idTVHeading"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_above="@id/idTVSelectedDate"
+android:layout_centerInParent="true"
+android:layout_margin="20dp"
+android:gravity="center"
+android:padding="10dp"
+android:text="Date Picker Dialog in Android"
+android:textAlignment="center"
+android:textColor="@color/black"
+android:textSize="20sp"
+android:textStyle="bold" />
+<!--on below line we are creating a text view-->
+<TextView
+android:id="@+id/idTVSelectedDate"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_above="@id/idBtnPickDate"
+android:layout_centerInParent="true"
+android:layout_margin="20dp"
+android:gravity="center"
+android:padding="10dp"
+android:text="Date"
+android:textAlignment="center"
+android:textColor="@color/black"
+android:textSize="20sp"
+android:textStyle="bold" />
+<!--on below line we are creating
+a button for date picker-->
+<Button
+android:id="@+id/idBtnPickDate"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_centerInParent="true"
+android:layout_margin="20dp"
+android:text="Pick Date"
+android:textAllCaps="false" />
+</RelativeLayout>
+JAVA:
+package com.gtappdevelopers.kotlingfgproject;
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.Calendar;
+public class MainActivity extends AppCompatActivity {
+// on below line we are creating variables.
+private Button pickDateBtn;
+private TextView selectedDateTV;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+// on below line we are initializing our variables.
+pickDateBtn = findViewById(R.id.idBtnPickDate)
+selectedDateTV = findViewById(R.id.idTVSelectedDate)
+// on below line we are adding click listener for our pick date
+button
+pickDateBtn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+// on below line we are getting
+// the instance of our calendar.
+final Calendar c = Calendar.getInstance();
+// on below line we are getting
+// our day, month and year.
+int year = c.get(Calendar.YEAR);
+int month = c.get(Calendar.MONTH);
+int day = c.get(Calendar.DAY_OF_MONTH);
+// on below line we are creating a variable for date
+picker dialog.
+DatePickerDialog datePickerDialog = new
+DatePickerDialog(
+// on below line we are passing context.
+MainActivity.this,
+new
+DatePickerDialog.OnDateSetListener() {
+@Override
+public void onDateSet(DatePicker
+view, int year,
+int
+monthOfYear, int dayOfMonth) {
+// on below line we are
+setting date to our text view.
+selectedDateTV.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+}
+},
+// on below line we are passing year,
+// month and day for selected date in our
+date picker.
+year, month, day);
+// at last we are calling show to
+// display our date picker dialog.
+datePickerDialog.show();
+}
+});
+}
+}
+=====================================================================================================================
+4.Create a Simple Application, which reads a positive number from the user
+and display its
+factorial value in another activity.
+XML FILE 1:
+?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<EditText
+android:id="@+id/et_no"
+android:layout_width="286dp"
+android:layout_height="75dp"
+android:ems="10"
+android:hint="Enter a number"
+android:textSize="30sp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.497"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.239" />
+<Button
+android:id="@+id/bt_cal"
+android:layout_width="258dp"
+android:layout_height="132dp"
+android:text="Calculate Factorial"
+android:textSize="30sp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.496"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.442" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+package com.example.factorial;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+EditText et_no=findViewById(R.id.et_no);
+Button bt_cal=findViewById(R.id.bt_cal);
+bt_cal.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+Bundle bundle= new Bundle();
+int usr,fact=1,i;
+usr = Integer.parseInt(et_no.getText().toString());
+for (i = 1;i <= usr;i++)
+{
+fact= fact*i;
+}
+/* Intent intent=new Intent(MainActivity.this,SecondActivity.class);
+intent.putExtra("key",fact);
+startActivity(intent);
+*/
+bundle.putInt("key",fact);
+Intent intent=new Intent(MainActivity.this,SecondActivity.class);
+intent.putExtras(bundle);
+startActivity(intent);
+}
+});
+}
+}
+xml 2 file
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="text"
+android:layout_gravity="center"
+android:textAlignment="center"
+android:textSize="30dp"
+android:id="@+id/txt_result">
+</TextView>
+</LinearLayout>
+Second activity file
+package com.example.factorial;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+public class SecondActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState){
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_second);
+TextView txt_result1=findViewById(R.id.txt_result);
+Intent intent=getIntent();
+Bundle bundle=intent.getExtras();
+int val=bundle.getInt("key");
+String str=String.valueOf(val);
+txt_result1.setText(str);
+}
+}
+=====================================================================================================================
+5.Create an Android application that plays an audio(song) in the background.
+Audio will notbe
+stopped even if you switch to another activity. To stop the audio, you need to
+stop the service.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:gravity="center_horizontal"
+android:orientation="vertical"
+android:padding="16dp">
+<Button
+android:onClick="PlayBackgroundSound"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Run background Sound"/>
+<TextView
+android:layout_marginTop="20dp"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:textSize="16sp"
+android:textStyle="bold"
+android:text="Playing Music in Background"/>
+</LinearLayout>
+Add the following code to src/MainActivity.java
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+}
+public void PlayBackgroundSound(View view) {
+Intent intent = new Intent(MainActivity.this, BackgroundSoundService.class);
+startService(intent);
+}
+}
+Step 4  Create a raw Android resource file, copy-paste an audio file which you
+want to play in the background (audio.mp3)
+Step 5 − Create a new java class (BackgroundSoundService.java and the following
+code −
+import android.app.Service;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.IBinder;
+import android.widget.Toast;
+import androidx.annotation.Nullable;
+public class BackgroundSoundService extends Service {
+MediaPlayer mediaPlayer;
+@Nullable
+@Override
+public IBinder onBind(Intent intent) {
+return null;
+}
+@Override
+public void onCreate() {
+super.onCreate();
+mediaPlayer = MediaPlayer.create(this, R.raw.sound);
+mediaPlayer.setLooping(true); // Set looping
+mediaPlayer.setVolume(100, 100);
+}
+public int onStartCommand(Intent intent, int flags, int startId) {
+mediaPlayer.start();
+Toast.makeText(getApplicationContext(), "Playing Bohemian Rashpody in the
+Background", Toast.LENGTH_SHORT).show();
+return startId;
+}
+public void onStart(Intent intent, int startId) {
+}
+@Override
+public void onDestroy() {
+mediaPlayer.stop();
+mediaPlayer.release();
+}
+@Override
+public void onLowMemory() {
+}
+}
+Step 6 − Add the following code to androidManifest.xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="app.com.sample">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/AppTheme">
+<activity android:name=".MainActivity">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+<service android:name=".BackgroundSoundService" />
+</application>
+</manifest>
+=====================================================================================================================
+6.Create an Android Application to display satellite view of current location
+using Google Map.
+ <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:map="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:id="@+id/map"
+ android:name="com.google.android.gms.maps.SupportMapFragment"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context="example.com.mapexample.MapsActivity" />
+build.gradel
+Add the following dependencies in build.gradel file.
+ dependencies {
+ implementation fileTree(dir: 'libs', include: ['*.jar'])
+ implementation 'com.android.support:appcompat-v7:26.1.0'
+ implementation 'com.google.android.gms:play-services-maps:11.8.0'
+ compile 'com.google.android.gms:play-services-location:11.8.0'
+ testImplementation 'junit:junit:4.12'
+ androidTestImplementation 'com.android.support.test:runner:1.0.1'
+ androidTestImplementation
+'com.android.support.test.espresso:espresso-core:3.0.1'
+
+.}
+MapsActivity.java
+Add the following code in MapsActivity.java file.
+ package example.com.mapexample;
+
+
+ import android.os.Build;
+ import android.support.v4.app.FragmentActivity;
+ import android.os.Bundle;
+
+ import com.google.android.gms.common.api.GoogleApiClient;
+ import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.location.LocationServices;
+
+import android.location.Location;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+
+
+public class MapsActivity extends FragmentActivity implements
+OnMapReadyCallback,
+ LocationListener,GoogleApiClient.ConnectionCallbacks,
+ GoogleApiClient.OnConnectionFailedListener{
+
+ private GoogleMap mMap;
+ Location mLastLocation;
+ Marker mCurrLocationMarker;
+ GoogleApiClient mGoogleApiClient;
+ LocationRequest mLocationRequest;
+
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_maps);
+ // Obtain the SupportMapFragment and get notified when the map is
+ready to be used.
+ SupportMapFragment mapFragment = (SupportMapFragment)
+getSupportFragmentManager()
+findFragmentById(R.id.map);
+ mapFragment.getMapAsync(this);
+
+ }
+
+ @Override
+ public void onMapReady(GoogleMap googleMap) {
+ mMap = googleMap;
+
+ if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+ if (ContextCompat.checkSelfPermission(this,
+ Manifest.permission.ACCESS_FINE_LOCATION)
+ == PackageManager.PERMISSION_GRANTED) {
+ buildGoogleApiClient();
+ mMap.setMyLocationEnabled(true);
+ }
+ }
+ else {
+ buildGoogleApiClient();
+ mMap.setMyLocationEnabled(true);
+ }
+
+ }
+ protected synchronized void buildGoogleApiClient() {
+ mGoogleApiClient = new GoogleApiClient.Builder(this)
+ .addConnectionCallbacks(this)
+ .addOnConnectionFailedListener(this)
+ .addApi(LocationServices.API).build();
+ mGoogleApiClient.connect();
+ }
+
+ @Override
+ public void onConnected(Bundle bundle) {
+
+ mLocationRequest = new LocationRequest();
+79. mLocationRequest.setInterval(1000);
+80. mLocationRequest.setFastestInterval(1000);
+81.
+mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWE
+R_ACCURACY);
+82. if (ContextCompat.checkSelfPermission(this,
+83. Manifest.permission.ACCESS_FINE_LOCATION)
+84. == PackageManager.PERMISSION_GRANTED) {
+85.
+LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClie
+nt, mLocationRequest, this);
+86. }
+87.
+88. }
+89.
+90. @Override
+91. public void onConnectionSuspended(int i) {
+92.
+93. }
+94.
+95. @Override
+96. public void onLocationChanged(Location location) {
+97.
+98. mLastLocation = location;
+99. if (mCurrLocationMarker != null) {
+100. mCurrLocationMarker.remove();
+101. }
+102. //Place current location marker
+103. LatLng latLng = new LatLng(location.getLatitude(),
+location.getLongitude());
+104. MarkerOptions markerOptions = new MarkerOptions();
+105. markerOptions.position(latLng);
+106. markerOptions.title("Current Position");
+107.
+markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescripto
+rFactory.HUE_GREEN));
+108. mCurrLocationMarker = mMap.addMarker(markerOptions);
+109.
+110. //move map camera
+111. mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+112. mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+113.
+114. //stop location updates
+115. if (mGoogleApiClient != null) {
+116.
+LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClie
+nt, this);
+117. }
+118.
+119. }
+120.
+121. @Override
+122. public void onConnectionFailed(ConnectionResult connectionResult) {
+123.
+124. }
+125.
+126. }
+Request Runtime Permission
+Android device having Android 6.0 (Marshmallow) or later are required some
+permission at runtime to access device functionality.
+In the above MapsActivity.java file we added a runtime permission
+Manifest.permission.ACCESS_FINE_LOCATION which request to access device
+location. The runtime permission is checked using checkSelfPermission() method
+and return PackageManager.PERMISSION_GRANTED or
+PackageManager.PERMISSION_DENIED. If permission granted than app proceeds for
+operation.
+Required Permission in AndroidManifest.xml
+Add the following user-permission in AndroidManifest.xml file.
+1. <uses-permission
+android:name="android.permission.ACCESS_FINE_LOCATION" />
+2. <uses-permission
+android:name="android.permission.ACCESS_COARSE_LOCATION" />
+3. <uses-permission android:name="android.permission.INTERNET" />
+AndroidManifest.xml
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3. package="example.com.mapexample">
+4. <!--
+5. The ACCESS_COARSE/FINE_LOCATION permissions are not required to
+use
+6. Google Maps Android API v2, but you must specify either coarse or fine
+7. location permissions for the 'MyLocation' functionality.
+8. -->
+9. <uses-permission
+android:name="android.permission.ACCESS_FINE_LOCATION" />
+10. <uses-permission
+android:name="android.permission.ACCESS_COARSE_LOCATION" />
+11. <uses-permission android:name="android.permission.INTERNET" />
+12.
+13.
+14. <application
+15. android:allowBackup="true"
+16. android:icon="@mipmap/ic_launcher"
+17. android:label="@string/app_name"
+18. android:roundIcon="@mipmap/ic_launcher_round"
+19. android:supportsRtl="true"
+20. android:theme="@style/AppTheme">
+21. <!--
+22. The API key for Google Maps-based APIs is defined as a string
+resource.
+23. (See the file "res/values/google_maps_api.xml").
+24. Note that the API key is linked to the encryption key used to sign the
+APK.
+25. You need a different API key for each encryption key, including the
+release key that is used to
+26. sign the APK for publishing.
+27. You can define the keys for the debug and release targets in
+src/debug/ and src/release/.
+28. -->
+29. <meta-data
+30. android:name="com.google.android.geo.API_KEY"
+31. android:value="@string/google_maps_key" />
+32.
+33. <activity
+34. android:name=".MapsActivity"
+35. android:label="@string/title_activity_maps">
+36. <intent-filter>
+37. <action android:name="android.intent.action.MAIN" />
+38.
+39. <category android:name="android.intent.category.LAUNCHER" />
+40. </intent-filter>
+41. </activity>
+42. </application>
+43.
+44.</manifest>
+=====================================================================================================================
+7.Create an Android Application that will change color of the College Name on
+click ofPush Button
+and change the font size, font style of text view using xml.
+XML FILE 1:
+<color name="colorPrimary">#6200EE</color>
+<color name="colorPrimaryDark">#3700B3</color>
+<color name="colorAccent">#03DAC5</color>
+<color name="green">#0F9D58</color>
+<color name="cool">#188FCF</color>
+<color name="warm">#F1D416</color>
+XML FILE 2:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/rlVar1"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/green"
+tools:context=".MainActivity">
+<TextView
+android:id="@+id/tvVar1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="240dp"
+android:text="What would you like?"
+android:textSize="30dp"
+android:textStyle="bold" />
+<LinearLayout
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@+id/tvVar1"
+android:layout_centerInParent="true"
+android:layout_marginTop="60dp"
+android:orientation="horizontal"
+android:padding="10dp">
+<Button
+android:id="@+id/btVar1"
+android:layout_width="150dp"
+android:layout_height="wrap_content"
+android:padding="20dp"
+android:text="Cool"
+android:textSize="25dp" />
+<Button
+android:id="@+id/btVar2"
+android:layout_width="150dp"
+android:layout_height="wrap_content"
+android:padding="20dp"
+android:text="Warm"
+android:textSize="25dp" />
+</LinearLayout>
+</RelativeLayout>
+JAVA:
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+Button button1, button2;
+final RelativeLayout relativeLayout;
+// set button 1 with its id
+button1 = findViewById(R.id.btVar1);
+// set button 2 with its id
+button2 = findViewById(R.id.btVar2);
+// set relative layout with its id
+relativeLayout = findViewById(R.id.rlVar1);
+// onClick function for button 1
+button1.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+// set the color to relative layout
+relativeLayout.setBackgroundResource(R.color.cool);
+}
+});
+// onClick function for button 2
+button2.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+// set the color to relative layout
+relativeLayout.setBackgroundResource(R.color.warm);
+}
+});
+}
+}
+=====================================================================================================================
+8.Create an Android Application to find the factorial of a number and Display
+the Resulton
+Alert Box.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<EditText
+android:id="@+id/number_edit_text"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:inputType="number"
+android:hint="Enter a number"
+android:padding="16dp"
+android:textSize="18sp"
+android:layout_marginTop="32dp"
+android:layout_marginLeft="16dp"
+android:layout_marginRight="16dp"
+android:layout_alignParentTop="true"/>
+<Button
+android:id="@+id/calculate_button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Calculate"
+android:textSize="18sp"
+android:layout_marginTop="16dp"
+android:layout_marginLeft="16dp"
+android:layout_marginRight="16dp"
+android:layout_below="@+id/number_edit_text"
+android:layout_alignParentLeft="true"
+android:layout_alignParentRight="true"/>
+</RelativeLayout>
+JAVA:
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+private EditText numberEditText;
+private Button calculateButton;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+numberEditText = findViewById(R.id.number_edit_text);
+calculateButton = findViewById(R.id.calculate_button);
+calculateButton.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+String input = numberEditText.getText().toString();
+if (!input.isEmpty()) {
+int number = Integer.parseInt(input);
+int factorial = calculateFactorial(number);
+// Show the result in an alert dialog box
+AlertDialog.Builder builder = new
+AlertDialog.Builder(MainActivity.this);
+builder.setTitle("Result");
+builder.setMessage("The factorial of " + number + " is " +
+factorial);
+builder.setPositiveButton("OK", new
+DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int id) {
+// Do nothing
+}
+});
+builder.show();
+} else {
+numberEditText.setError("Please enter a number");
+}
+}
+});
+}
+private int calculateFactorial(int number) {
+int result = 1;
+for (int i = 1; i <= number; i++) {
+result *= i;
+}
+return result;
+}
+}
+=====================================================================================================================
+9.Create an Android App, it reads the Students Details (Name, Surname,
+Class, Gender, Hobbies, Marks) and
+display the all information in another activity in table format on click of Submit
+button.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<!-- Name -->
+<TextView
+android:id="@+id/name_label"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Name"
+android:textSize="18sp"
+android:layout_marginTop="16dp"
+android:layout_marginLeft="16dp"
+android:layout_alignParentLeft="true"
+android:layout_alignParentTop="true" />
+<EditText
+android:id="@+id/name_edit_text"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:inputType="textPersonName"
+android:hint="Enter your name"
+android:padding="16dp"
+android:textSize="18sp"
+android:layout_toRightOf="@+id/name_label"
+android:layout_alignBaseline="@+id/name_label" />
+<!-- Surname -->
+<TextView
+android:id="@+id/surname_label"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Surname"
+android:textSize="18sp"
+android:layout_marginTop="16dp"
+android:layout_marginLeft="16dp"
+android:layout_below="@+id/name_label"
+android:layout_alignParentLeft="true" />
+<EditText
+android:id="@+id/surname_edit_text"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:inputType="textPersonName"
+android:hint="Enter your surname"
+android:padding="16dp"
+android:textSize="18sp"
+android:layout_toRightOf="@+id/surname_label"
+android:layout_alignBaseline="@+id/surname_label" />
+<!-- Class -->
+<TextView
+android:id="@+id/class_label"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Class"
+android:textSize="18sp"
+android:layout_marginTop="16dp"
+android:layout_marginLeft="16dp"
+android:layout_below="@+id/surname_label"
+android:layout_alignParentLeft="true" />
+<EditText
+android:id="@+id/class_edit_text"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:inputType="text"
+android:hint="Enter your class"
+android:padding="16dp"
+android:textSize="18sp"
+android:layout_toRightOf="@+id/class_label"
+android:layout_alignBaseline="@+id/class_label" />
+<!-- Gender -->
+<TextView
+android:id="@+id/gender_label"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Gender"
+android:textSize="18sp"
+android:layout_marginTop="16dp"
+android:layout_marginLeft="16dp"
+android:layout_below="@+id/class_edit_text"
+android:layout_alignParentLeft="true" />
+<RadioGroup
+android:id="@+id/gender_radio_group"
+android:layout
+10.Create a Simple Application, that performs Arithmetic Operations.
+11.Create an Android Application that sends the Notification on click of the
+button and displays the notification
+message on the second activity.
+XML:
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <android.support.constraint.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+3. xmlns:app="http://schemas.android.com/apk/res-auto"
+4. xmlns:tools="http://schemas.android.com/tools"
+5. android:layout_width="match_parent"
+6. android:layout_height="match_parent"
+7. tools:context="example.javatpoint.com.androidnotification.MainActivity">
+8.
+9. <TextView
+10. android:layout_width="wrap_content"
+11. android:layout_height="wrap_content"
+12. android:text="ANDROID NOTIFICATION"
+13. app:layout_constraintBottom_toBottomOf="parent"
+14. app:layout_constraintLeft_toLeftOf="parent"
+15. app:layout_constraintRight_toRightOf="parent"
+16. app:layout_constraintTop_toTopOf="parent"
+17. app:layout_constraintVertical_bias="0.091"
+18.
+android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+/>
+19.
+20. <Button
+21. android:layout_width="wrap_content"
+22. android:layout_height="wrap_content"
+23. android:id="@+id/button"
+24. android:layout_marginBottom="112dp"
+25. android:layout_marginEnd="8dp"
+26. android:layout_marginStart="8dp"
+27. android:text="Notify"
+28. app:layout_constraintBottom_toBottomOf="parent"
+29. app:layout_constraintEnd_toEndOf="parent"
+30. app:layout_constraintStart_toStartOf="parent" />
+31.
+32.</android.support.constraint.ConstraintLayout>
+Create an activity named as activity_notification_view.xml and add the following
+code. This activity will be launched on clicking the notification. TextView is used to
+display the notification message.
+activity_notification_view.xml
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <android.support.constraint.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+3. xmlns:app="http://schemas.android.com/apk/res-auto"
+4. xmlns:tools="http://schemas.android.com/tools"
+5. android:layout_width="match_parent"
+6. android:layout_height="match_parent"
+7.
+tools:context="example.javatpoint.com.androidnotification.NotificationView">
+8.
+9. <TextView
+10. android:id="@+id/textView2"
+11. android:layout_width="fill_parent"
+12. android:layout_height="wrap_content"
+13. android:gravity="center"
+14. android:text="your detail of notification..."
+15.
+android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+/>
+16.
+17. <TextView
+18. android:id="@+id/textView"
+19. android:layout_width="wrap_content"
+20. android:layout_height="wrap_content"
+21. android:layout_marginBottom="8dp"
+22. android:layout_marginEnd="8dp"
+23. android:layout_marginStart="8dp"
+24. android:layout_marginTop="8dp"
+25. app:layout_constraintBottom_toBottomOf="parent"
+26. app:layout_constraintEnd_toEndOf="parent"
+27. app:layout_constraintHorizontal_bias="0.096"
+28. app:layout_constraintStart_toStartOf="parent"
+29. app:layout_constraintTop_toBottomOf="@+id/textView2"
+30. app:layout_constraintVertical_bias="0.206"
+31.
+android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+/>
+32.
+33.</android.support.constraint.ConstraintLayout>
+MainActivity.java
+In the MainActivity.java class adds the following code. In this class, clicking the
+button calls the addNotification() method where we implement the
+NotificationCompat.Builder object to set the notification properties. The
+NotificationManager.notify() method is used to display the notification. The Intent
+class is used to call another activity (NotificationView.java) on taping the notification.
+1. package example.javatpoint.com.androidnotification;
+2.
+3. import android.app.NotificationManager;
+4. import android.app.PendingIntent;
+5. import android.content.Context;
+6. import android.content.Intent;
+7. import android.support.v4.app.NotificationCompat;
+8. import android.support.v7.app.AppCompatActivity;
+9. import android.os.Bundle;
+10.import android.view.View;
+11.import android.widget.Button;
+12.
+13.public class MainActivity extends AppCompatActivity {
+14. Button button;
+15. @Override
+16. protected void onCreate(Bundle savedInstanceState) {
+17. super.onCreate(savedInstanceState);
+18. setContentView(R.layout.activity_main);
+19. button = findViewById(R.id.button);
+20. button.setOnClickListener(new View.OnClickListener() {
+21. @Override
+22. public void onClick(View v) {
+23. addNotification();
+24. }
+25. });
+26. }
+27.
+28. private void addNotification() {
+29. NotificationCompat.Builder builder =
+30. new NotificationCompat.Builder(this)
+31. .setSmallIcon(R.drawable.messageicon) //set icon for
+notification
+32. .setContentTitle("Notifications Example") //set title of
+notification
+33. .setContentText("This is a notification message")//this is
+notification message
+34. .setAutoCancel(true) // makes auto cancel of notification
+35. .setPriority(NotificationCompat.PRIORITY_DEFAULT); //set
+priority of notification
+36.
+37.
+38. Intent notificationIntent = new Intent(this, NotificationView.class);
+39. notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+40. //notification message will get at NotificationView
+41. notificationIntent.putExtra("message", "This is a notification message");
+42.
+43. PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+notificationIntent,
+44. PendingIntent.FLAG_UPDATE_CURRENT);
+45. builder.setContentIntent(pendingIntent);
+46.
+47. // Add as notification
+48. NotificationManager manager = (NotificationManager)
+getSystemService(Context.NOTIFICATION_SERVICE);
+49. manager.notify(0, builder.build());
+50. }
+51.}
+NotificationView.java
+The NotificationView.java class receives the notification message and is displayed
+in TextView. This class is invoked while taping the notification.
+1. package example.javatpoint.com.androidnotification;
+2.
+3. import android.support.v7.app.AppCompatActivity;
+4. import android.os.Bundle;
+5. import android.widget.TextView;
+6. import android.widget.Toast;
+7.
+8. public class NotificationView extends AppCompatActivity {
+9. TextView textView;
+10. @Override
+11. protected void onCreate(Bundle savedInstanceState) {
+12. super.onCreate(savedInstanceState);
+13. setContentView(R.layout.activity_notification_view);
+14. textView = findViewById(R.id.textView);
+15. //getting the notification message
+16. String message=getIntent().getStringExtra("message");
+17. textView.setText(message);
+18. }
+19.}
+strings.xml
+1. <resources>
+2. <string name="app_name">AndroidNotification</string>
+3. <string name="notification_activity">NotificationView</string>
+4. </resources>
+AndroidManifest.xml
+Add the following code in AndroidManifest.xml file.
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3. package="example.javatpoint.com.androidnotification">
+4.
+5. <application
+6. android:allowBackup="true"
+7. android:icon="@mipmap/ic_launcher"
+8. android:label="@string/app_name"
+9. android:roundIcon="@mipmap/ic_launcher_round"
+10. android:supportsRtl="true"
+11. android:theme="@style/AppTheme">
+12. <activity android:name=".MainActivity">
+13. <intent-filter>
+14. <action android:name="android.intent.action.MAIN" />
+15.
+16. <category android:name="android.intent.category.LAUNCHER" />
+17. </intent-filter>
+18. </activity>
+19. <activity android:name=".NotificationView"
+20. android:label="@string/notification_activity"
+21. android:parentActivityName=".MainActivity">
+22. <meta-data
+23. android:name="android.support.PARENT_ACTIVITY"
+24. android:value=".MainActivity"/>
+25. </activity>
+26. </application>
+27.
+28.</manifest>
+=====================================================================================================================
+Q:Create an android Application for performing the following operation on the
+table
+Customer (id, name, address, phno).
+1. package example.javatpoint.com.sqlitetutorial;
+2.
+3. public class Contact {
+4. int _id;
+5. String _name;
+6. String _phone_number;
+7. public Contact(){ }
+8. public Contact(int id, String name, String _phone_number){
+9. this._id = id;
+10. this._name = name;
+11. this._phone_number = _phone_number;
+12. }
+13.
+14. public Contact(String name, String _phone_number){
+15. this._name = name;
+16. this._phone_number = _phone_number;
+17. }
+18. public int getID(){
+19. return this._id;
+20. }
+21.
+22. public void setID(int id){
+23. this._id = id;
+24. }
+25.
+26. public String getName(){
+27. return this._name;
+28. }
+29.
+30. public void setName(String name){
+31. this._name = name;
+32. }
+33.
+34. public String getPhoneNumber(){
+35. return this._phone_number;
+36. }
+37.
+38. public void setPhoneNumber(String phone_number){
+39. this._phone_number = phone_number;
+40. }
+41.}
+File: DatabaseHandler.java
+Now, let's create the database handler class that extends SQLiteOpenHelper class
+and provides the implementation of its methods.
+1. package example.javatpoint.com.sqlitetutorial;
+2.
+3. import android.content.ContentValues;
+4. import android.content.Context;
+5. import android.database.Cursor;
+6. import android.database.sqlite.SQLiteDatabase;
+7. import android.database.sqlite.SQLiteOpenHelper;
+8. import java.util.ArrayList;
+9. import java.util.List;
+10.
+11.
+12.public class DatabaseHandler extends SQLiteOpenHelper {
+13. private static final int DATABASE_VERSION = 1;
+14. private static final String DATABASE_NAME = "contactsManager";
+15. private static final String TABLE_CONTACTS = "contacts";
+16. private static final String KEY_ID = "id";
+17. private static final String KEY_NAME = "name";
+18. private static final String KEY_PH_NO = "phone_number";
+19.
+20. public DatabaseHandler(Context context) {
+21. super(context, DATABASE_NAME, null, DATABASE_VERSION);
+22. //3rd argument to be passed is CursorFactory instance
+23. }
+24.
+25. // Creating Tables
+26. @Override
+27. public void onCreate(SQLiteDatabase db) {
+28. String CREATE_CONTACTS_TABLE = "CREATE TABLE " +
+TABLE_CONTACTS + "("
+29. + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
+30. + KEY_PH_NO + " TEXT" + ")";
+31. db.execSQL(CREATE_CONTACTS_TABLE);
+32. }
+33.
+34. // Upgrading database
+35. @Override
+36. public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+37. // Drop older table if existed
+38. db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
+39.
+40. // Create tables again
+41. onCreate(db);
+42. }
+43.
+44. // code to add the new contact
+45. void addContact(Contact contact) {
+46. SQLiteDatabase db = this.getWritableDatabase();
+47.
+48. ContentValues values = new ContentValues();
+49. values.put(KEY_NAME, contact.getName()); // Contact Name
+50. values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
+51.
+52. // Inserting Row
+53. db.insert(TABLE_CONTACTS, null, values);
+54. //2nd argument is String containing nullColumnHack
+55. db.close(); // Closing database connection
+56. }
+57.
+58. // code to get the single contact
+59. Contact getContact(int id) {
+60. SQLiteDatabase db = this.getReadableDatabase();
+61.
+62. Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
+63. KEY_NAME, KEY_PH_NO }, KEY_ID + "=?",
+64. new String[] { String.valueOf(id) }, null, null, null, null);
+65. if (cursor != null)
+66. cursor.moveToFirst();
+67.
+68. Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
+69. cursor.getString(1), cursor.getString(2));
+70. // return contact
+71. return contact;
+72. }
+73.
+74. // code to get all contacts in a list view
+75. public List<Contact> getAllContacts() {
+76. List<Contact> contactList = new ArrayList<Contact>();
+77. // Select All Query
+78. String selectQuery = "SELECT * FROM " + TABLE_CONTACTS;
+79.
+80. SQLiteDatabase db = this.getWritableDatabase();
+81. Cursor cursor = db.rawQuery(selectQuery, null);
+82.
+83. // looping through all rows and adding to list
+84. if (cursor.moveToFirst()) {
+85. do {
+86. Contact contact = new Contact();
+87. contact.setID(Integer.parseInt(cursor.getString(0)));
+88. contact.setName(cursor.getString(1));
+89. contact.setPhoneNumber(cursor.getString(2));
+90. // Adding contact to list
+91. contactList.add(contact);
+92. } while (cursor.moveToNext());
+93. }
+94.
+95. // return contact list
+96. return contactList;
+97. }
+98.
+99. // code to update the single contact
+100. public int updateContact(Contact contact) {
+101. SQLiteDatabase db = this.getWritableDatabase();
+102.
+103. ContentValues values = new ContentValues();
+104. values.put(KEY_NAME, contact.getName());
+105. values.put(KEY_PH_NO, contact.getPhoneNumber());
+106.
+107. // updating row
+108. return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
+109. new String[] { String.valueOf(contact.getID()) });
+110. }
+111.
+112. // Deleting single contact
+113. public void deleteContact(Contact contact) {
+114. SQLiteDatabase db = this.getWritableDatabase();
+115. db.delete(TABLE_CONTACTS, KEY_ID + " = ?",
+116. new String[] { String.valueOf(contact.getID()) });
+117. db.close();
+118. }
+119.
+120. // Getting contacts Count
+121. public int getContactsCount() {
+122. String countQuery = "SELECT * FROM " + TABLE_CONTACTS;
+123. SQLiteDatabase db = this.getReadableDatabase();
+124. Cursor cursor = db.rawQuery(countQuery, null);
+125. cursor.close();
+126.
+127. // return count
+128. return cursor.getCount();
+129. }
+130.
+131. }
+File: MainActivity.java
+1. package example.javatpoint.com.sqlitetutorial;
+2.
+3. import android.support.v7.app.AppCompatActivity;
+4. import android.os.Bundle;
+5. import android.util.Log;
+6. import java.util.List;
+7.
+8. public class MainActivity extends AppCompatActivity {
+9.
+10. @Override
+11. protected void onCreate(Bundle savedInstanceState) {
+12. super.onCreate(savedInstanceState);
+13. setContentView(R.layout.activity_main);
+14. DatabaseHandler db = new DatabaseHandler(this);
+15.
+16. // Inserting Contacts
+17. Log.d("Insert: ", "Inserting ..");
+18. db.addContact(new Contact("Ravi", "9100000000"));
+19. db.addContact(new Contact("Srinivas", "9199999999"));
+20. db.addContact(new Contact("Tommy", "9522222222"));
+21. db.addContact(new Contact("Karthik", "9533333333"));
+22.
+23. // Reading all contacts
+24. Log.d("Reading: ", "Reading all contacts..");
+25. List<Contact> contacts = db.getAllContacts();
+26.
+27. for (Contact cn : contacts) {
+28. String log = "Id: " + cn.getID() + " ,Name: " + cn.getName() + " ,Phone: " +
+29. cn.getPhoneNumber();
+30. // Writing Contacts to log
+31. Log.d("Name: ", log);
+32. }
+33. }
+34.}
+=====================================================================================================================
+13.Create an Android Application to accept two numbers and find power and
+Average.
+Display the result on the next activity on Button click.
+14.Create an Android application that creates a custom Alert Dialog containing
+Friends
+Name and onClick of Friend Name Button greet accordingly.
+15.Create an Android Application to perform Zoom In, Zoom Out operation
+and display
+Satellite view, on Google Map.
+<resources>
+<!--
+TODO: Before you run your application, you need a Google Maps API key.
+To get one, follow this link, follow the directions and press "Create" at
+the end:
+https://console.developers.google.com/flows/enableapi?apiid=maps_android_back
+end&keyType=CLIENT_SIDE_ANDROID&r=8B:49:70:2A:08:F2:23:14:CF:A1:FC:6F:6D:5B:6
+0:3C:B6:85:98:F2%3Bcom.example.abhishek.googlemaps
+You can also add your credentials to an existing key, using these values:
+Package name:
+8B:49:70:2A:08:F2:23:14:CF:A1:FC:6F:6D:5B:60:3C:B6:85:98:F2
+SHA-1 certificate fingerprint:
+8B:49:70:2A:08:F2:23:14:CF:A1:FC:6F:6D:5B:60:3C:B6:85:98:F2
+Alternatively, follow the directions here:
+https://developers.google.com/maps/documentation/android/start#get-key
+Once you have your key (it starts with "AIza"), replace the
+"google_maps_key"
+string in this file.
+-->
+<string name="google_maps_key" templateMergeStrategy="preserve"
+translatable="false">AIzaSyDV2_xy58r15K6TskZy4KWMuhUDVq67jqM</string>
+</resources>
+activity_maps.xml code
+<fragment android:id="@+id/map"
+android:name="com.google.android.gms.maps.SupportMapFragment"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:map="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.abhiandroid.GoogleMaps.googlemaps.MapsActivity"/>
+AndroidManifest.xml code:
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.abhiandroid.GoogleMaps.googlemaps"
+xmlns:android="http://schemas.android.com/apk/res/android">
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.INTERNET"/>
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:supportsRtl="true"
+android:theme="@style/AppTheme">
+<meta-data
+android:name="com.google.android.geo.API_KEY"
+android:value="@string/google_maps_key"/>
+<activity
+android:name="com.abhiandroid.GoogleMaps.googlemaps.MapsActivity"
+android:label="@string/title_activity_maps">
+<intent-filter>
+<action android:name="android.intent.action.MAIN"/>
+<category android:name="android.intent.category.LAUNCHER"/>
+</intent-filter>
+</activity>
+</application>
+</manifest>
+MapsActivity.java class:
+package com.abhiandroid.GoogleMaps.googlemaps;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.abhiandroid.GoogleMaps.googlemaps.R;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+public class MapsActivity extends FragmentActivity implements
+OnMapReadyCallback,
+GoogleApiClient.ConnectionCallbacks,
+GoogleApiClient.OnConnectionFailedListener,
+LocationListener {
+public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+GoogleApiClient mGoogleApiClient;
+Location mLastLocation;
+Marker mCurrLocationMarker;
+LocationRequest mLocationRequest;
+private GoogleMap mMap;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_maps);
+if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+checkLocationPermission();
+}
+SupportMapFragment mapFragment = (SupportMapFragment)
+getSupportFragmentManager()
+.findFragmentById(R.id.map);
+mapFragment.getMapAsync(this);
+}
+@Override
+public void onMapReady(GoogleMap googleMap) {
+mMap = googleMap;
+mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+mMap.getUiSettings().setZoomControlsEnabled(true);
+mMap.getUiSettings().setZoomGesturesEnabled(true);
+mMap.getUiSettings().setCompassEnabled(true);
+//Initialize Google Play Services
+if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+if (ContextCompat.checkSelfPermission(this,
+Manifest.permission.ACCESS_FINE_LOCATION)
+== PackageManager.PERMISSION_GRANTED) {
+buildGoogleApiClient();
+mMap.setMyLocationEnabled(true);
+}
+} else {
+buildGoogleApiClient();
+mMap.setMyLocationEnabled(true);
+}
+}
+protected synchronized void buildGoogleApiClient() {
+mGoogleApiClient = new GoogleApiClient.Builder(this)
+.addConnectionCallbacks(this)
+.addOnConnectionFailedListener(this)
+.addApi(LocationServices.API)
+.build();
+mGoogleApiClient.connect();
+}
+@Override
+public void onConnected(Bundle bundle) {
+mLocationRequest = new LocationRequest();
+mLocationRequest.setInterval(1000);
+mLocationRequest.setFastestInterval(1000);
+mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+);
+if (ContextCompat.checkSelfPermission(this,
+Manifest.permission.ACCESS_FINE_LOCATION)
+== PackageManager.PERMISSION_GRANTED) {
+LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+mLocationRequest, this);
+}
+}
+@Override
+public void onConnectionSuspended(int i) {
+}
+@Override
+public void onLocationChanged(Location location) {
+mLastLocation = location;
+if (mCurrLocationMarker != null) {
+mCurrLocationMarker.remove();
+}
+//Showing Current Location Marker on Map
+LatLng latLng = new LatLng(location.getLatitude(),
+location.getLongitude());
+MarkerOptions markerOptions = new MarkerOptions();
+markerOptions.position(latLng);
+LocationManager locationManager = (LocationManager)
+getSystemService(Context.LOCATION_SERVICE);
+String provider = locationManager.getBestProvider(new Criteria(),
+true);
+if (ActivityCompat.checkSelfPermission(this,
+Manifest.permission.ACCESS_FINE_LOCATION) !=
+PackageManager.PERMISSION_GRANTED &&
+ActivityCompat.checkSelfPermission(this,
+Manifest.permission.ACCESS_COARSE_LOCATION)
+!= PackageManager.PERMISSION_GRANTED) {
+return;
+}
+Location locations = locationManager.getLastKnownLocation(provider);
+List<String> providerList = locationManager.getAllProviders();
+if (null != locations && null != providerList && providerList.size()
+> 0) {
+double longitude = locations.getLongitude();
+double latitude = locations.getLatitude();
+Geocoder geocoder = new Geocoder(getApplicationContext(),
+Locale.getDefault());
+try {
+List<Address> listAddresses =
+geocoder.getFromLocation(latitude,
+longitude, 1);
+if (null != listAddresses && listAddresses.size() > 0) {
+String state = listAddresses.get(0).getAdminArea();
+String country = listAddresses.get(0).getCountryName();
+String subLocality =
+listAddresses.get(0).getSubLocality();
+markerOptions.title("" + latLng + "," + subLocality + ","
++ state
++ "," + country);
+}
+} catch (IOException e) {
+e.printStackTrace();
+}
+}
+markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFact
+ory.HUE_BLUE));
+mCurrLocationMarker = mMap.addMarker(markerOptions);
+mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+if (mGoogleApiClient != null) {
+LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,
+this);
+}
+}
+@Override
+public void onConnectionFailed(ConnectionResult connectionResult) {
+}
+public boolean checkLocationPermission() {
+if (ContextCompat.checkSelfPermission(this,
+Manifest.permission.ACCESS_FINE_LOCATION)
+!= PackageManager.PERMISSION_GRANTED) {
+if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+Manifest.permission.ACCESS_FINE_LOCATION)) {
+ActivityCompat.requestPermissions(this,
+new
+String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+MY_PERMISSIONS_REQUEST_LOCATION);
+} else {
+ActivityCompat.requestPermissions(this,
+new
+String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+MY_PERMISSIONS_REQUEST_LOCATION);
+}
+return false;
+} else {
+return true;
+}
+}
+@Override
+public void onRequestPermissionsResult(int requestCode,
+String permissions[], int[]
+grantResults) {
+switch (requestCode) {
+case MY_PERMISSIONS_REQUEST_LOCATION: {
+if (grantResults.length > 0
+&& grantResults[0] ==
+PackageManager.PERMISSION_GRANTED) {
+if (ContextCompat.checkSelfPermission(this,
+Manifest.permission.ACCESS_FINE_LOCATION)
+== PackageManager.PERMISSION_GRANTED) {
+if (mGoogleApiClient == null) {
+buildGoogleApiClient();
+}
+mMap.setMyLocationEnabled(true);
+}
+} else {
+Toast.makeText(this, "permission denied",
+Toast.LENGTH_LONG).show();
+}
+return;
+}
+}
+}
+}
+=====================================================================================================================
+16.Q. Create a Simple Application Which Send ―Hello! message from one
+activity to anotherwith
+help of Button (Use Intent).
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".first_activity">
+<EditText
+android:id="@+id/send_text_id"
+android:layout_width="300dp"
+android:layout_height="wrap_content"
+android:layout_marginLeft="40dp"
+android:layout_marginTop="20dp"
+android:hint="Input"
+android:textSize="25dp"
+android:textStyle="bold" />
+<Button
+android:id="@+id/send_button_id"
+android:layout_width="wrap_content"
+android:layout_height="40dp"
+android:layout_marginLeft="150dp"
+android:layout_marginTop="150dp"
+android:text="send"
+android:textStyle="bold" />
+</RelativeLayout>
+JAVA:
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import androidx.appcompat.app.AppCompatActivity;
+public class first_activity extends AppCompatActivity {
+// define the variable
+Button send_button;
+EditText send_text;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_first_activity);
+send_button = findViewById(R.id.send_button_id);
+send_text = findViewById(R.id.send_text_id);
+// add the OnClickListener in sender button after clicked this
+button following Instruction will run
+send_button.setOnClickListener(v -> {
+// get the value which input by user in EditText and convert
+it to string
+String str = send_text.getText().toString();
+// Create the Intent object of this class Context() to
+Second_activity class
+Intent intent = new Intent(getApplicationContext(),
+Second_activity.class);
+// now by putExtra method put the value in key, value pair
+key is
+// message_key by this key we will receive the value, and
+put the string
+intent.putExtra("message_key", str);
+// start the Intent
+startActivity(intent);
+});
+}
+}
+=====================================================================================================================
+17.Create an Android Application that Demonstrates ListView and Onclick of
+List Displaythe
+Toast.
+activity_main.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#000000"
+tools:context=".MainActivity">
+<ListView
+android:id="@+id/listViewID"
+android:layout_width="match_parent"
+android:layout_height="495dp"
+android:layout_marginLeft="8dp"
+android:layout_marginRight="8dp"
+app:layout_constraintHorizontal_bias="1.0"
+app:layout_constraintLeft_toLeftOf="parent"
+app:layout_constraintRight_toRightOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
+You are here
+Home > HelloWorld >
+Display Selected Item Of ListView Using Toast In Android
+HelloWorld
+by Manasi Dharne - March 11, 2019
+2
+Contents [hide]
+ListView
+In Android, List of scroll-able items can be displayed using ListView. Users can
+select any list item by clicking on it.
+Problem Statement:
+Develop an application to create list of fruits using ListView and display
+selected fruit of ListView using toast. How to get the selected item from
+ListView?
+Several Ways to create ListView:
+There 2 ways to create ListView:
+● we can assign ListView by giving values in main.xml.
+● we can assign values in string.xml.
+Sample Code:
+Here is sample code for ListView using toast in android, Created two files to
+develop an application.
+● Layout file(activity_main.xml):This file contains code to design an GUI
+of an application. In this we have used widget ListView to display list
+and TextView to display text on lists.
+● Activity file(MainActivity.java): This file contains code to perform
+activity on listview.In this we have created Array, ArrayList, Adapter
+and ListView. We have added created Array into ArrayList then
+ArrayList into Adapter and then Adapter into ListView.
+activity_main.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#000000"
+tools:context=".MainActivity">
+<ListView
+android:id="@+id/listViewID"
+android:layout_width="match_parent"
+android:layout_height="495dp"
+android:layout_marginLeft="8dp"
+android:layout_marginRight="8dp"
+app:layout_constraintHorizontal_bias="1.0"
+app:layout_constraintLeft_toLeftOf="parent"
+app:layout_constraintRight_toRightOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
+MainActivity.java
+package com.toast.listviewe;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.view.ViewGroup;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity{
+ListView fruitView;
+String[] fruits = new String[]
+{
+"Mango",
+"Orange",
+"Guava",
+"Banana",
+"Pineapple",
+"Apple"
+};
+List<String> fruitList;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+fruitView = (ListView) findViewById(R.id.listViewID);
+fruitList = new ArrayList<String>(Arrays.asList(fruits));
+ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+android.R.layout.simple_list_item_2, android.R.id.text1,
+fruitList) {
+@Override
+public View getView(int position, View convertView, ViewGroup
+parent) {
+View view = super.getView(position, convertView, parent);
+TextView ListItemShow = (TextView)
+view.findViewById(android.R.id.text1);
+ListItemShow.setTextColor(Color.parseColor("#ffffff"));
+return view;
+}
+};
+fruitView.setAdapter(adapter);
+fruitView.setOnItemClickListener(new
+AdapterView.OnItemClickListener()
+{
+@Override
+public void onItemClick(AdapterView<?> parent, View view,
+int position, long id) {
+Toast.makeText(MainActivity.this, "clicked item is "
++fruits[position], Toast.LENGTH_SHORT).show();
+}
+});
+}
+}
+=====================================================================================================================
+18.Create an Android application to perform following operations on table
+Student (Sid
+,Sname ,phno). Use autoincrement for Sid and Perform following Operations.
+a) Add Student and display its information.
+b) Delete Student
+19.Create an Android Application that Demonstrate Radio Button.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Select your Subject ?"
+android:textStyle="bold"
+android:layout_marginLeft="10dp"
+android:textSize="20sp"/>
+<!-- add RadioGroup which contain the many RadioButton-->
+<RadioGroup
+android:layout_marginTop="50dp"
+android:id="@+id/groupradio"
+android:layout_marginLeft="10dp"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content">
+<!-- In RadioGroup create the 1 Radio Button-->
+<!-- like this we will add some more Radio Button-->
+<RadioButton
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:id="@+id/radia_id1"
+android:text="DBMS"
+android:textSize="20sp"/>
+<RadioButton
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:id="@+id/radia_id2"
+android:text="C/C++ Programming"
+android:textSize="20sp"/>
+<RadioButton
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:id="@+id/radia_id3"
+android:text="Data Structure"
+android:textSize="20sp"/>
+<RadioButton
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:id="@+id/radia_id4"
+android:text="Algorithms"
+android:textSize="20sp"/>
+</RadioGroup>
+<!-- add button For Submit the Selected item-->
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Submit"
+android:id="@+id/submit"
+android:textStyle="bold"
+android:textSize="20sp"
+android:layout_marginTop="200dp"
+android:layout_marginLeft="180dp"
+/>
+<!-- add clear button for clear the selected item-->
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Clear"
+android:id="@+id/clear"
+android:textSize="20sp"
+android:textStyle="bold"
+android:layout_marginTop="200dp"
+android:layout_marginLeft="20dp"
+/>
+</RelativeLayout>
+JAVA:
+package org.geeksforgeeks.navedmalik.radiobuttons;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+// Define the object for Radio Group,
+// Submit and Clear buttons
+private RadioGroup radioGroup;
+Button submit, clear;
+@Override
+protected void onCreate(Bundle savedInstanceState)
+{
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+// Bind the components to their respective objects
+// by assigning their IDs
+// with the help of findViewById() method
+submit = (Button)findViewById(R.id.submit);
+clear = (Button)findViewById(R.id.clear);
+radioGroup = (RadioGroup)findViewById(R.id.groupradio);
+// Uncheck or reset the radio buttons initially
+radioGroup.clearCheck();
+// Add the Listener to the RadioGroup
+radioGroup.setOnCheckedChangeListener(
+new RadioGroup
+.OnCheckedChangeListener() {
+@Override
+// The flow will come here when
+// any of the radio buttons in the radioGroup
+// has been clicked
+// Check which radio button has been clicked
+public void onCheckedChanged(RadioGroup
+group,
+int
+checkedId)
+{
+// Get the selected Radio Button
+RadioButton
+radioButton
+= (RadioButton)group
+.findViewById(checkedId);
+}
+});
+// Add the Listener to the Submit Button
+submit.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v)
+{
+// When submit button is clicked,
+// Ge the Radio Button which is set
+// If no Radio Button is set, -1 will be returned
+int selectedId =
+radioGroup.getCheckedRadioButtonId();
+if (selectedId == -1) {
+Toast.makeText(MainActivity.this,
+"No answer has been
+selected",
+Toast.LENGTH_SHORT)
+.show();
+}
+else {
+RadioButton radioButton
+= (RadioButton)radioGroup
+.findViewById(selectedId);
+// Now display the value of selected item
+// by the Toast message
+Toast.makeText(MainActivity.this,
+radioButton.getText(),
+Toast.LENGTH_SHORT)
+.show();
+}
+}
+});
+// Add the Listener to the Submit Button
+clear.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v)
+{
+// Clear RadioGroup
+// i.e. reset all the Radio Buttons
+radioGroup.clearCheck();
+}
+});
+}
+}
+=====================================================================================================================
+20.Create an Android application to demonstrate phone call using Implicit
+Intent.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<!--Relative Layout-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<!-- Edit text for phone number -->
+<EditText
+android:id="@+id/editText"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentTop="true"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="30dp" />
+<!-- Button to make call -->
+<Button
+android:id="@+id/button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentTop="true"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="115dp"
+android:padding="5dp"
+android:text="Make Call!!" />
+</RelativeLayout>
+JAVA:
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+// define objects for edit text and button
+EditText edittext;
+Button button;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+// Getting instance of edittext and button
+button = findViewById(R.id.button);
+edittext = findViewById(R.id.editText);
+// Attach set on click listener to the button for initiating intent
+button.setOnClickListener(arg -> {
+// getting phone number from edit text and changing it to
+String
+String phone_number = edittext.getText().toString();
+// Getting instance of Intent with action as ACTION_CALL
+Intent phone_intent = new Intent(Intent.ACTION_CALL);
+// Set data of Intent through Uri by parsing phone number
+phone_intent.setData(Uri.parse("tel:" + phone_number));
+// start Intent
+startActivity(phone_intent);
+});
+}
+}
+=====================================================================================================================
+21.Write an android code to turn ON /OFF the Wi-Fi
+File: activity_main.xml
+1. <RelativeLayout
+xmlns:androclass="http://schemas.android.com/apk/res/android"
+2. xmlns:tools="http://schemas.android.com/tools"
+3. android:layout_width="match_parent"
+4. android:layout_height="match_parent"
+5. tools:context=".MainActivity" >
+6.
+7. <Button
+8. android:id="@+id/button1"
+9. android:layout_width="wrap_content"
+10. android:layout_height="wrap_content"
+11. android:layout_alignParentLeft="true"
+12. android:layout_alignParentTop="true"
+13. android:layout_marginLeft="76dp"
+14. android:layout_marginTop="67dp"
+15. android:text="Enable Wifi" />
+16.
+17. <Button
+18. android:id="@+id/button2"
+19. android:layout_width="wrap_content"
+20. android:layout_height="wrap_content"
+21. android:layout_alignLeft="@+id/button1"
+22. android:layout_below="@+id/button1"
+23. android:layout_marginTop="44dp"
+24. android:text="Disable Wifi" />
+25.
+26.</RelativeLayout>
+File: MainActivity.java
+1. package com.example.wifi;
+2.
+3. import android.net.wifi.WifiManager;
+4. import android.os.Bundle;
+5. import android.app.Activity;
+6. import android.content.Context;
+7. import android.view.Menu;
+8. import android.view.View;
+9. import android.view.View.OnClickListener;
+10.import android.widget.Button;
+11.
+12.public class MainActivity extends Activity {
+13. Button enableButton,disableButton;
+14. @Override
+15. protected void onCreate(Bundle savedInstanceState) {
+16. super.onCreate(savedInstanceState);
+17. setContentView(R.layout.activity_main);
+18.
+19. enableButton=(Button)findViewById(R.id.button1);
+20. disableButton=(Button)findViewById(R.id.button2);
+21.
+22. enableButton.setOnClickListener(new OnClickListener(){
+23. public void onClick(View v){
+24. WifiManager wifi = (WifiManager)
+getSystemService(Context.WIFI_SERVICE);
+25. wifi.setWifiEnabled(true);
+26. }
+27. });
+28. disableButton.setOnClickListener(new OnClickListener(){
+29. public void onClick(View v){
+30. WifiManager wifi = (WifiManager)
+getSystemService(Context.WIFI_SERVICE);
+31. wifi.setWifiEnabled(false);
+32. }
+33. });
+34. }
+35.
+36. @Override
+37. public boolean onCreateOptionsMenu(Menu menu) {
+38. // Inflate the menu; this adds items to the action bar if it is present.
+39. getMenuInflater().inflate(R.menu.activity_main, menu);
+40. return true;
+41. }
+42.
+43.}
+
+===========================================================================================================================
+22.Create an Android App with Login Screen. On successful login, gives
+message go to next Activity
+(Without Using Database&amp; use Table Layout).
+package com.example.sairamkrishna.myapplication;
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+public class MainActivity extends Activity {
+Button b1,b2;
+EditText ed1,ed2;
+TextView tx1;
+int counter = 3;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+b1 = (Button)findViewById(R.id.button);
+ed1 = (EditText)findViewById(R.id.editText);
+ed2 = (EditText)findViewById(R.id.editText2);
+b2 = (Button)findViewById(R.id.button2);
+tx1 = (TextView)findViewById(R.id.textView3);
+tx1.setVisibility(View.GONE);
+b1.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+if(ed1.getText().toString().equals("admin") &&
+ed2.getText().toString().equals("admin")) {
+Toast.makeText(getApplicationContext(),
+"Redirecting...",Toast.LENGTH_SHORT).show();
+}else{
+Toast.makeText(getApplicationContext(), "Wrong
+Credentials",Toast.LENGTH_SHORT).show();
+tx1.setVisibility(View.VISIBLE);
+tx1.setBackgroundColor(Color.RED);
+counter--;
+tx1.setText(Integer.toString(counter));
+if (counter == 0) {
+b1.setEnabled(false);
+}
+}
+}
+});
+b2.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+finish();
+}
+});
+}
+}
+Following is the modified content of the xml res/layout/activity_main.xml.
+In the following code abc indicates about logo of tutorialspoint.com
+<?xml version = "1.0" encoding = "utf-8"?>
+<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+xmlns:tools = "http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height = "match_parent" android:paddingLeft=
+"@dimen/activity_horizontal_margin"
+android:paddingRight = "@dimen/activity_horizontal_margin"
+android:paddingTop = "@dimen/activity_vertical_margin"
+android:paddingBottom = "@dimen/activity_vertical_margin" tools:context =
+".MainActivity">
+<TextView android:text = "Login" android:layout_width="wrap_content"
+android:layout_height = "wrap_content"
+android:id = "@+id/textview"
+android:textSize = "35dp"
+android:layout_alignParentTop = "true"
+android:layout_centerHorizontal = "true" />
+<TextView
+android:layout_width = "wrap_content"
+android:layout_height = "wrap_content"
+android:text = "Tutorials point"
+android:id = "@+id/textView"
+android:layout_below = "@+id/textview"
+android:layout_centerHorizontal = "true"
+android:textColor = "#ff7aff24"
+android:textSize = "35dp" />
+<EditText
+android:layout_width = "wrap_content"
+android:layout_height = "wrap_content"
+android:id = "@+id/editText"
+android:hint = "Enter Name"
+android:focusable = "true"
+android:textColorHighlight = "#ff7eff15"
+android:textColorHint = "#ffff25e6"
+android:layout_marginTop = "46dp"
+android:layout_below = "@+id/imageView"
+android:layout_alignParentLeft = "true"
+android:layout_alignParentStart = "true"
+android:layout_alignParentRight = "true"
+android:layout_alignParentEnd = "true" />
+<ImageView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/imageView"
+android:src="@drawable/abc"
+android:layout_below="@+id/textView"
+android:layout_centerHorizontal="true" />
+<EditText
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:inputType="textPassword"
+android:ems="10"
+android:id="@+id/editText2"
+android:layout_below="@+id/editText"
+android:layout_alignParentLeft="true"
+android:layout_alignParentStart="true"
+android:layout_alignRight="@+id/editText"
+android:layout_alignEnd="@+id/editText"
+android:textColorHint="#ffff299f"
+android:hint="Password" />
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Attempts Left:"
+android:id="@+id/textView2"
+android:layout_below="@+id/editText2"
+android:layout_alignParentLeft="true"
+android:layout_alignParentStart="true"
+android:textSize="25dp" />
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="New Text"
+android:id="@+id/textView3"
+android:layout_alignTop="@+id/textView2"
+android:layout_alignParentRight="true"
+android:layout_alignParentEnd="true"
+android:layout_alignBottom="@+id/textView2"
+android:layout_toEndOf="@+id/textview"
+android:textSize="25dp"
+android:layout_toRightOf="@+id/textview" />
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="login"
+android:id="@+id/button"
+android:layout_alignParentBottom="true"
+android:layout_toLeftOf="@+id/textview"
+android:layout_toStartOf="@+id/textview" />
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Cancel"
+android:id="@+id/button2"
+android:layout_alignParentBottom="true"
+android:layout_toRightOf="@+id/textview"
+android:layout_toEndOf="@+id/textview" />
+</RelativeLayout>
+Following is the content of the res/values/string.xml.
+<resources>
+<string name="app_name">My Application</string>
+</resources>
+Following is the content of AndroidManifest.xml file.
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.sairamkrishna.myapplication" >
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:theme="@style/AppTheme" >
+<activity
+android:name=".MainActivity"
+android:label="@string/app_name" >
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+===========================================================================================================================
+
+23.Create an android application to demonstrate how to use a service to
+download a file fromthe
+Internet on click of Download Button. Once done, the service notifies the
+activity via a broadcast
+receiver that the download is complete.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+</androidx.constraintlayout.widget.ConstraintLayout>
+JAVA:
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+public class MainActivity extends AppCompatActivity {
+AirplaneModeChangeReceiver airplaneModeChangeReceiver =
+new AirplaneModeChangeReceiver();
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+}
+@Override
+protected void onStart() {
+super.onStart();
+IntentFilter filter = new
+IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+registerReceiver(airplaneModeChangeReceiver, filter);
+}
+@Override
+protected void onStop() {
+super.onStop();
+unregisterReceiver(airplaneModeChangeReceiver);
+}
+}
+24.Create application to send email with attachment.
+activity_main.xml.
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="4dp"
+tools:context=".MainActivity">
+<EditText
+android:id="@+id/etTo"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_margin="5dp"
+android:hint="Receiver's Email Address!"
+android:inputType="textEmailAddress"
+android:singleLine="true" />
+<EditText
+android:id="@+id/etSubject"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="5dp"
+android:hint="Enter Subject"
+android:singleLine="true" />
+<EditText
+android:id="@+id/etMessage"
+android:layout_width="match_parent"
+android:layout_height="200dp"
+android:layout_margin="5dp"
+android:gravity="top|start"
+android:hint="Compose Email"
+android:inputType="textMultiLine" />
+<RelativeLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+<Button
+android:id="@+id/btSend"
+android:layout_width="80dp"
+android:layout_height="50dp"
+android:layout_margin="5dp"
+android:text="Send" />
+<Button
+android:id="@+id/btAttachment"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:text="attachment" />
+</RelativeLayout>
+<TextView
+android:id="@+id/tvAttachment"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:drawableStart="@drawable/ic_attach"
+android:visibility="gone" />
+</LinearLayout>
+Step 3 − Add the following code to src/MainActivity.java
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+public class MainActivity extends Activity {
+EditText etEmail;
+EditText etSubject;
+EditText etMessage;
+Button Send;
+Button attachment;
+TextView tvAttachment;
+String email;
+String subject;
+String message;
+Uri URI = null;
+private static final int PICK_FROM_GALLERY = 101;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+etEmail = findViewById(R.id.etTo);
+etSubject = findViewById(R.id.etSubject);
+etMessage = findViewById(R.id.etMessage);
+attachment = findViewById(R.id.btAttachment);
+tvAttachment = findViewById(R.id.tvAttachment);
+Send = findViewById(R.id.btSend);
+Send.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+sendEmail();
+}
+});
+//attachment button listener
+attachment.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+openFolder();
+}
+});
+}
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+if (requestCode == PICK_FROM_GALLERY && resultCode == RESULT_OK) {
+URI = data.getData();
+tvAttachment.setText(URI.getLastPathSegment());
+tvAttachment.setVisibility(View.VISIBLE);
+}
+}
+public void sendEmail() {
+try {
+email = etEmail.getText().toString();
+subject = etSubject.getText().toString();
+message = etMessage.getText().toString();
+final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+emailIntent.setType("plain/text");
+emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
+emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+if (URI != null) {
+emailIntent.putExtra(Intent.EXTRA_STREAM, URI);
+}
+emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+this.startActivity(Intent.createChooser(emailIntent, "Sending email..."));
+} catch (Throwable t) {
+Toast.makeText(this, "Request failed try again: "+ t.toString(),
+Toast.LENGTH_LONG).show();
+}
+}
+public void openFolder() {
+Intent intent = new Intent();
+intent.setType("image/*");
+intent.setAction(Intent.ACTION_GET_CONTENT);
+intent.putExtra("return-data", true);
+startActivityForResult(Intent.createChooser(intent, "Complete action using"),
+PICK_FROM_GALLERY);
+}
+}
+Step 4 − Add the following code to androidManifest.xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="app.com.sample">
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+/>
+<uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"
+/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+/>
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/AppTheme">
+<activity android:name=".MainActivity">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+25.Write an Android application to accept two numbers from the user, and
+display them, but reject input
+if both numbers are greater than 10 and asks for two new numbers.
+26.Write a program to find the specific location of an Android device and
+display details of the
+place like Address line, city with Geocoding.
+XML:
+1. <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+2. xmlns:map="http://schemas.android.com/apk/res-auto"
+3. xmlns:tools="http://schemas.android.com/tools"
+4. android:id="@+id/map"
+5. android:name="com.google.android.gms.maps.SupportMapFragment"
+6. android:layout_width="match_parent"
+7. android:layout_height="match_parent"
+8. tools:context="example.com.mapexample.MapsActivity">
+9. <LinearLayout
+10. android:layout_width="match_parent"
+11. android:layout_height="wrap_content"
+12. android:orientation="horizontal">
+13.
+14. <EditText
+15. android:layout_width="248dp"
+16. android:layout_height="wrap_content"
+17. android:id="@+id/editText"
+18. android:layout_weight="0.5"
+19. android:inputType="textPersonName"
+20. android:hint="Search Location" />
+21.
+22. <Button
+23. android:layout_width="wrap_content"
+24. android:layout_height="wrap_content"
+25. android:layout_weight="0.5"
+26. android:onClick="searchLocation"
+27. android:text="Search" />
+28.
+29. </LinearLayout>
+30.
+31.</fragment>
+build.gradel
+Add the following dependencies in build.gradel file.
+1. dependencies {
+2. implementation fileTree(dir: 'libs', include: ['*.jar'])
+3. implementation 'com.android.support:appcompat-v7:26.1.0'
+4. implementation 'com.google.android.gms:play-services-maps:11.8.0'
+5. compile 'com.google.android.gms:play-services-location:11.8.0'
+6. testImplementation 'junit:junit:4.12'
+7. androidTestImplementation 'com.android.support.test:runner:1.0.1'
+8. androidTestImplementation
+'com.android.support.test.espresso:espresso-core:3.0.1'
+9.
+10.}
+11.package example.com.mapexample;
+12.
+13.import android.location.Address;
+14.import android.location.Geocoder;
+15.import android.os.Build;
+16.import android.support.v4.app.FragmentActivity;
+17.import android.os.Bundle;
+18.
+19.import com.google.android.gms.common.api.GoogleApiClient;
+20.import com.google.android.gms.maps.CameraUpdateFactory;
+21.import com.google.android.gms.maps.GoogleMap;
+22.import com.google.android.gms.maps.OnMapReadyCallback;
+23.import com.google.android.gms.maps.SupportMapFragment;
+24.import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+25.import com.google.android.gms.maps.model.LatLng;
+26.import com.google.android.gms.maps.model.Marker;
+27.import com.google.android.gms.maps.model.MarkerOptions;
+28.import com.google.android.gms.location.LocationServices;
+29.
+30.import android.location.Location;
+31.import android.Manifest;
+32.import android.content.pm.PackageManager;
+33.import android.support.v4.content.ContextCompat;
+34.import android.view.View;
+35.import android.widget.EditText;
+36.import android.widget.Toast;
+37.
+38.import com.google.android.gms.common.ConnectionResult;
+39.import com.google.android.gms.location.LocationListener;
+40.import com.google.android.gms.location.LocationRequest;
+41.
+42.import java.io.IOException;
+43.import java.util.List;
+44.
+45.
+46.public class MapsActivity extends FragmentActivity implements
+OnMapReadyCallback,
+47. LocationListener,GoogleApiClient.ConnectionCallbacks,
+48. GoogleApiClient.OnConnectionFailedListener{
+49.
+50. private GoogleMap mMap;
+51. Location mLastLocation;
+52. Marker mCurrLocationMarker;
+53. GoogleApiClient mGoogleApiClient;
+54. LocationRequest mLocationRequest;
+55.
+56. @Override
+57. protected void onCreate(Bundle savedInstanceState) {
+58. super.onCreate(savedInstanceState);
+59. setContentView(R.layout.activity_maps);
+60. // Obtain the SupportMapFragment and get notified when the map is
+ready to be used.
+61. SupportMapFragment mapFragment = (SupportMapFragment)
+getSupportFragmentManager()
+62. .findFragmentById(R.id.map);
+63. mapFragment.getMapAsync(this);
+64.
+65. }
+66.
+67. @Override
+68. public void onMapReady(GoogleMap googleMap) {
+69. mMap = googleMap;
+70.
+71. if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+72. if (ContextCompat.checkSelfPermission(this,
+73. Manifest.permission.ACCESS_FINE_LOCATION)
+74. == PackageManager.PERMISSION_GRANTED) {
+75. buildGoogleApiClient();
+76. mMap.setMyLocationEnabled(true);
+77. }
+78. }
+79. else {
+80. buildGoogleApiClient();
+81. mMap.setMyLocationEnabled(true);
+82. }
+83.
+84. }
+85. protected synchronized void buildGoogleApiClient() {
+86. mGoogleApiClient = new GoogleApiClient.Builder(this)
+87. .addConnectionCallbacks(this)
+88. .addOnConnectionFailedListener(this)
+89. .addApi(LocationServices.API).build();
+90. mGoogleApiClient.connect();
+91. }
+92.
+93. @Override
+94. public void onConnected(Bundle bundle) {
+95.
+96. mLocationRequest = new LocationRequest();
+97. mLocationRequest.setInterval(1000);
+98. mLocationRequest.setFastestInterval(1000);
+99.
+mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWE
+R_ACCURACY);
+100. if (ContextCompat.checkSelfPermission(this,
+101. Manifest.permission.ACCESS_FINE_LOCATION)
+102. == PackageManager.PERMISSION_GRANTED) {
+103.
+LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClie
+nt, mLocationRequest, this);
+104. }
+105.
+106. }
+107.
+108. @Override
+109. public void onConnectionSuspended(int i) {
+110.
+111. }
+112.
+113. @Override
+114. public void onLocationChanged(Location location) {
+115.
+116. mLastLocation = location;
+117. if (mCurrLocationMarker != null) {
+118. mCurrLocationMarker.remove();
+119. }
+120. //Place current location marker
+121. LatLng latLng = new LatLng(location.getLatitude(),
+location.getLongitude());
+122. MarkerOptions markerOptions = new MarkerOptions();
+123. markerOptions.position(latLng);
+124. markerOptions.title("Current Position");
+125.
+markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescripto
+rFactory.HUE_GREEN));
+126. mCurrLocationMarker = mMap.addMarker(markerOptions);
+127.
+128. //move map camera
+129. mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+130. mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+131.
+132. //stop location updates
+133. if (mGoogleApiClient != null) {
+134.
+LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClie
+nt, this);
+135. }
+136.
+137. }
+138.
+139. @Override
+140. public void onConnectionFailed(ConnectionResult connectionResult) {
+141.
+142. }
+143.
+144. public void searchLocation(View view) {
+145. EditText locationSearch = (EditText) findViewById(R.id.editText);
+146. String location = locationSearch.getText().toString();
+147. List<Address> addressList = null;
+148.
+149. if (location != null || !location.equals("")) {
+150. Geocoder geocoder = new Geocoder(this);
+151. try {
+152. addressList = geocoder.getFromLocationName(location, 1);
+153.
+154. } catch (IOException e) {
+155. e.printStackTrace();
+156. }
+157. Address address = addressList.get(0);
+158. LatLng latLng = new LatLng(address.getLatitude(),
+address.getLongitude());
+159. mMap.addMarker(new
+MarkerOptions().position(latLng).title(location));
+160. mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+161. Toast.makeText(getApplicationContext(),address.getLatitude()+"
+"+address.getLongitude(),Toast.LENGTH_LONG).show();
+162. }
+163. }
+164.
+165. }
+AndroidManifest.xml
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3. package="example.com.mapexample">
+4. <!--
+5. The ACCESS_COARSE/FINE_LOCATION permissions are not required to
+use
+6. Google Maps Android API v2, but you must specify either coarse or fine
+7. location permissions for the 'MyLocation' functionality.
+8. -->
+9. <uses-permission
+android:name="android.permission.ACCESS_FINE_LOCATION" />
+10. <uses-permission
+android:name="android.permission.ACCESS_COARSE_LOCATION" />
+11. <uses-permission android:name="android.permission.INTERNET" />
+12.
+13. <application
+14. android:allowBackup="true"
+15. android:icon="@mipmap/ic_launcher"
+16. android:label="@string/app_name"
+17. android:roundIcon="@mipmap/ic_launcher_round"
+18. android:supportsRtl="true"
+19. android:theme="@style/AppTheme">
+20. <!--
+21. The API key for Google Maps-based APIs is defined as a string
+resource.
+22. (See the file "res/values/google_maps_api.xml").
+23. Note that the API key is linked to the encryption key used to sign the
+APK.
+24. You need a different API key for each encryption key, including the
+release key that is used to
+25. sign the APK for publishing.
+26. You can define the keys for the debug and release targets in
+src/debug/ and src/release/.
+27. -->
+28. <meta-data
+29. android:name="com.google.android.geo.API_KEY"
+30. android:value="@string/google_maps_key" />
+31.
+32. <activity
+33. android:name=".MapsActivity"
+34. android:label="@string/title_activity_maps">
+35. <intent-filter>
+36. <action android:name="android.intent.action.MAIN" />
+37.
+38. <category android:name="android.intent.category.LAUNCHER" />
+39. </intent-filter>
+40. </activity>
+41. </application>
+42.
+43.</manifest>
+25.Create an Android Application that Demonstrate Switch and Toggle Button.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="https://schemas.android.com/apk/res/android"
+xmlns:app="https://schemas.android.com/apk/res-auto"
+xmlns:tools="https://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+tools:context="com.journaldev.switchandtoggle.MainActivity"
+tools:showIn="@layout/activity_main">
+<ToggleButton
+android:id="@+id/tb1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentLeft="true"
+android:layout_alignParentTop="true"
+android:text="ToggleButton 1"
+android:textOff="Off"
+android:textOn="On" />
+<ToggleButton
+android:id="@+id/tb2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignBaseline="@+id/tb1"
+android:layout_alignBottom="@+id/tb1"
+android:layout_toRightOf="@+id/tb1"
+android:text="ToggleButton 2"
+android:textOff="Off"
+android:textOn="On" />
+<android.support.v7.widget.SwitchCompat
+android:id="@+id/switchButton"
+android:layout_width="wrap_content"
+android:layout_centerInParent="true"
+android:checked="false"
+android:layout_height="wrap_content"
+android:textAppearance="?android:attr/textAppearanceMedium"
+android:text="Switch example"
+/>
+</RelativeLayout>
+The MainActivity.java is given below:
+package com.journaldev.switchandtoggle;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
+public class MainActivity extends AppCompatActivity {
+ToggleButton tb1, tb2;
+SwitchCompat switchCompat;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+setSupportActionBar(toolbar);
+FloatingActionButton fab = (FloatingActionButton)
+findViewById(R.id.fab);
+fab.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+StringBuilder result = new StringBuilder();
+result.append("ToggleButton1 :
+").append(tb1.getText());
+result.append("\nToggleButton2 :
+").append(tb2.getText());
+Snackbar snackbar= Snackbar.make(view,
+result.toString(), Snackbar.LENGTH_LONG)
+.setAction("SWITCH ENABLE", new
+View.OnClickListener() {
+@Override
+public void onClick(View v) {
+switchCompat.setChecked(true);
+}
+});
+snackbar.setActionTextColor(Color.RED);
+snackbar.show();
+}
+});
+tb1= (ToggleButton)findViewById(R.id.tb1);
+tb2=(ToggleButton)findViewById(R.id.tb2);
+switchCompat=(SwitchCompat)findViewById(R.id.switchButton);
+switchCompat.setOnCheckedChangeListener(new
+CompoundButton.OnCheckedChangeListener() {
+@Override
+public void onCheckedChanged(CompoundButton buttonView,
+boolean isChecked) {
+Snackbar.make(buttonView, "Switch state checked
+"+isChecked, Snackbar.LENGTH_LONG)
+.setAction("ACTION",null).show();
+}
+});
+}
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+// Inflate the menu; this adds items to the action bar if it is
+present.
+getMenuInflater().inflate(R.menu.menu_main, menu);
+return true;
+}
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+// Handle action bar item clicks here. The action bar will
+// automatically handle clicks on the Home/Up button, so long
+// as you specify a parent activity in AndroidManifest.xml.
+int id = item.getItemId();
+//noinspection SimplifiableIfStatement
+if (id == R.id.action_settings) {
+return true;
+}
+return super.onOptionsItemSelected(item);
+}
+}
+26.Create a fragment that has its own UI and enable your activities to
+communicate with
+fragments.
+JAVA:
+public class MyFragment extends Fragment {
+private TextView textView;
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container,
+Bundle savedInstanceState) {
+// Inflate the layout for this fragment
+View view = inflater.inflate(R.layout.fragment_layout, container, false);
+// Get a reference to the TextView in the layout
+textView = view.findViewById(R.id.text_view);
+return view;
+}
+public void updateTextView(String text) {
+// Update the text in the TextView
+textView.setText(text);
+}
+}
+XML:
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+<TextView
+android:id="@+id/text_view"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Hello, Fragment!" />
+</LinearLayout>
+3. In your activity, create an instance of the fragment and add it to the layout.
+Here's an example:
+public class MainActivity extends AppCompatActivity {
+private MyFragment myFragment;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+// Create an instance of the fragment
+myFragment = new MyFragment();
+// Add the fragment to the layout
+getSupportFragmentManager()
+.beginTransaction()
+.add(R.id.fragment_container, myFragment)
+.commit();
+}
+public void updateFragmentTextView(String text) {
+// Call the updateTextView method on the fragment
+myFragment.updateTextView(text);
+}
+}
+4. n your activity layout XML file, define a container for the fragment. Here's an
+example:
+bash
+Copy code
+<FrameLayout android:id="@+id/fragment_container"
+android:layout_width="match_parent" android:layout_height="match_parent" />
+5. You can now communicate with the fragment from your activity by calling its
+public methods. In this example, we're calling the updateTextView method to
+update the text in the fragment's TextView:
+scss
+Copy code
+public class MainActivity extends AppCompatActivity { private MyFragment
+myFragment; @Override protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState); setContentView(R.layout.activity_main); //
+Create an instance of the fragment myFragment = new MyFragment(); // Add the
+fragment to the layout getSupportFragmentManager() .beginTransaction()
+.add(R.id.fragment_container, myFragment) .commit(); // Update the text in the
+fragment's TextView myFragment.updateTextView("Hello, Fragment!"); } }
+26.Demonstrate Array Adapter using List View to display list of fruits.
+27.create android application to change Font Size, Color and Font Family of
+String.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TextView
+android:id="@+id/textView1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Im Huge"
+android:fontFamily="sans-serif-smallcaps"
+android:layout_centerInParent="true"
+android:textSize="64sp" />
+<TextView
+android:id="@+id/textView2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@id/textView1"
+android:layout_marginBottom="10dp"
+android:text="Im small"
+android:layout_centerInParent="true"
+android:fontFamily="serif-monospace"
+android:textSize="36sp" />
+<TextView
+android:id="@+id/textView3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@id/textView2"
+android:layout_marginBottom="10dp"
+android:text="Im tiny"
+android:layout_centerInParent="true"
+android:fontFamily="serif-monospace"
+android:textSize="24sp" />
+</RelativeLayout>
+JAVA:
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+}
+}
+===========================================================================================================================
+
+27.Q. Create an application to demonstrate date and time picker.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<Button
+android:id="@+id/btnPick"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="30dp"
+android:text="Pick Date and TIme"/>
+<TextView
+android:id="@+id/textView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerInParent="true"
+android:textSize="16sp"
+android:textStyle="bold"/>
+</RelativeLayout>
+Step 3 − Add the following code to src/MainActivity.java
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import java.util.Calendar;
+public class MainActivity extends AppCompatActivity implements
+DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+TextView textView;
+Button button;
+int day, month, year, hour, minute;
+int myday, myMonth, myYear, myHour, myMinute;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+textView = findViewById(R.id.textView);
+button = findViewById(R.id.btnPick);
+button.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+Calendar calendar = Calendar.getInstance();
+year = calendar.get(Calendar.YEAR);
+month = calendar.get(Calendar.MONTH);
+day = calendar.get(Calendar.DAY_OF_MONTH);
+DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+MainActivity.this,year, month,day);
+datePickerDialog.show();
+}
+});
+}
+@Override
+public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+myYear = year;
+myday = day;
+myMonth = month;
+Calendar c = Calendar.getInstance();
+hour = c.get(Calendar.HOUR);
+minute = c.get(Calendar.MINUTE);
+TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this,
+MainActivity.this, hour, minute, DateFormat.is24HourFormat(this));
+timePickerDialog.show();
+}
+@Override
+public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+myHour = hourOfDay;
+myMinute = minute;
+textView.setText("Year: " + myYear + "
+" +
+"Month: " + myMonth + "
+" +
+"Day: " + myday + "
+" +
+"Hour: " + myHour + "
+" +
+"Minute: " + myMinute);
+}
+}
+Step 4 − Add the following code to androidManifest.xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="app.com.sample">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/AppTheme">
+<activity android:name=".MainActivity">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+28.Create following Vertical Scroll View Creation in Android.
+activity_main.xml
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+3. xmlns:tools="http://schemas.android.com/tools"
+4. android:layout_width="match_parent"
+5. android:layout_height="match_parent"
+6. android:paddingBottom="@dimen/activity_vertical_margin"
+7. android:paddingLeft="@dimen/activity_horizontal_margin"
+8. android:paddingRight="@dimen/activity_horizontal_margin"
+9. android:paddingTop="@dimen/activity_vertical_margin"
+10. tools:context="com.example.test.scrollviews.MainActivity">
+11.
+12.
+13. <TextView
+14. android:layout_width="wrap_content"
+15. android:layout_height="wrap_content"
+16. android:textAppearance="?android:attr/textAppearanceMedium"
+17. android:text="Vertical ScrollView example"
+18. android:id="@+id/textView"
+19. android:layout_gravity="center_horizontal"
+20. android:layout_centerHorizontal="true"
+21. android:layout_alignParentTop="true" />
+22.
+23.
+24. <ScrollView android:layout_marginTop="30dp"
+25. android:layout_width="fill_parent"
+26. android:layout_height="wrap_content"
+27. android:id="@+id/scrollView">
+28.
+29.
+30. <LinearLayout
+31. android:layout_width="fill_parent"
+32. android:layout_height="fill_parent"
+33. android:orientation="vertical" >
+34.
+35. <Button
+36. android:layout_width="fill_parent"
+37. android:layout_height="wrap_content"
+38. android:text="Button 1" />
+39. <Button
+40. android:layout_width="fill_parent"
+41. android:layout_height="wrap_content"
+42. android:text="Button 2" />
+43. <Button
+44. android:layout_width="fill_parent"
+45. android:layout_height="wrap_content"
+46. android:text="Button 3" />
+47. <Button
+48. android:layout_width="fill_parent"
+49. android:layout_height="wrap_content"
+50. android:text="Button 4" />
+51. <Button
+52. android:layout_width="fill_parent"
+53. android:layout_height="wrap_content"
+54. android:text="Button 5" />
+55. <Button
+56. android:layout_width="fill_parent"
+57. android:layout_height="wrap_content"
+58. android:text="Button 6" />
+59. <Button
+60. android:layout_width="fill_parent"
+61. android:layout_height="wrap_content"
+62. android:text="Button 7" />
+63. <Button
+64. android:layout_width="fill_parent"
+65. android:layout_height="wrap_content"
+66. android:text="Button 8" />
+67. <Button
+68. android:layout_width="fill_parent"
+69. android:layout_height="wrap_content"
+70. android:text="Button 9" />
+71. <Button
+72. android:layout_width="fill_parent"
+73. android:layout_height="wrap_content"
+74. android:text="Button 10" />
+75. <Button
+76. android:layout_width="fill_parent"
+77. android:layout_height="wrap_content"
+78. android:text="Button 11" />
+79. <Button
+80. android:layout_width="fill_parent"
+81. android:layout_height="wrap_content"
+82. android:text="Button 12" />
+83. <Button
+84. android:layout_width="fill_parent"
+85. android:layout_height="wrap_content"
+86. android:text="Button 13" />
+87. <Button
+88. android:layout_width="fill_parent"
+89. android:layout_height="wrap_content"
+90. android:text="Button 14" />
+91. <Button
+92. android:layout_width="fill_parent"
+93. android:layout_height="wrap_content"
+94. android:text="Button 15" />
+95. <Button
+96. android:layout_width="fill_parent"
+97. android:layout_height="wrap_content"
+98. android:text="Button 16" />
+99. <Button
+100. android:layout_width="fill_parent"
+101. android:layout_height="wrap_content"
+102. android:text="Button 17" />
+103. <Button
+104. android:layout_width="fill_parent"
+105. android:layout_height="wrap_content"
+106. android:text="Button 18" />
+107.
+108. <Button
+109. android:layout_width="fill_parent"
+110. android:layout_height="wrap_content"
+111. android:text="Button 19" />
+112. <Button
+113. android:layout_width="fill_parent"
+114. android:layout_height="wrap_content"
+115. android:text="Button 20" />
+116.
+117. </LinearLayout>
+118.
+119. </ScrollView>
+120.
+121. </RelativeLayout>
+Activity class
+In activity class, we have not changed any code.
+File: MainActivity.java
+1. package com.example.test.scrollviews;
+2.
+3. import android.support.v7.app.AppCompatActivity;
+4. import android.os.Bundle;
+5.
+6. public class MainActivity extends AppCompatActivity {
+7.
+8. @Override
+9. protected void onCreate(Bundle savedInstanceState) {
+10. super.onCreate(savedInstanceState);
+11. setContentView(R.layout.activity_main);
+12. }
+13.}
+29.Write a program to search a specific location on Google Map.
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<!--fragment to display our maps-->
+<fragment xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/map"
+android:name="com.google.android.gms.maps.SupportMapFragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MapsActivity" />
+<!--search view to search our location-->
+<androidx.appcompat.widget.SearchView
+android:id="@+id/idSearchView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="10dp"
+android:background="#BFBFBF"
+android:elevation="5dp"
+app:iconifiedByDefault="false"
+app:queryHint="Search Here" />
+</RelativeLayout>
+JAVA:
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import java.io.IOException;
+import java.util.List;
+public class MapsActivity extends FragmentActivity implements
+OnMapReadyCallback {
+private GoogleMap mMap;
+// creating a variable
+// for search view.
+SearchView searchView;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_maps);
+// initializing our search view.
+searchView = findViewById(R.id.idSearchView);
+// Obtain the SupportMapFragment and get notified
+// when the map is ready to be used.
+SupportMapFragment mapFragment = (SupportMapFragment)
+getSupportFragmentManager().findFragmentById(R.id.map);
+// adding on query listener for our search view.
+searchView.setOnQueryTextListener(new
+SearchView.OnQueryTextListener() {
+@Override
+public boolean onQueryTextSubmit(String query) {
+// on below line we are getting the
+// location name from search view.
+String location = searchView.getQuery().toString();
+// below line is to create a list of address
+// where we will store the list of all address.
+List<Address> addressList = null;
+// checking if the entered location is null or not.
+if (location != null || location.equals("")) {
+// on below line we are creating and initializing
+a geo coder.
+Geocoder geocoder = new
+Geocoder(MapsActivity.this);
+try {
+// on below line we are getting location
+from the
+// location name and adding that location
+to address list.
+addressList =
+geocoder.getFromLocationName(location, 1);
+} catch (IOException e) {
+e.printStackTrace();
+}
+// on below line we are getting the location
+// from our list a first position.
+Address address = addressList.get(0);
+// on below line we are creating a variable for
+our location
+// where we will add our locations latitude and
+longitude.
+LatLng latLng = new
+LatLng(address.getLatitude(), address.getLongitude());
+// on below line we are adding marker to that
+position.
+mMap.addMarker(new
+MarkerOptions().position(latLng).title(location));
+// below line is to animate camera to that
+position.
+mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+}
+return false;
+}
+@Override
+public boolean onQueryTextChange(String newText) {
+return false;
+}
+});
+// at last we calling our map fragment to update.
+mapFragment.getMapAsync(this);
+}
+@Override
+public void onMapReady(GoogleMap googleMap) {
+mMap = googleMap;
+}
+}
+29.Create an android application to send an email
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Relative Layout -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<!-- Edit text for email id -->
+<EditText
+android:id="@+id/editText1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentTop="true"
+android:layout_alignParentRight="true"
+android:layout_marginTop="18dp"
+android:layout_marginRight="22dp" />
+<!-- Edit text for email subject -->
+<EditText
+android:id="@+id/editText2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@+id/editText1"
+android:layout_alignLeft="@+id/editText1"
+android:layout_marginTop="20dp" />
+<!-- Edit text for email body -->
+<EditText
+android:id="@+id/editText3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@+id/editText2"
+android:layout_alignLeft="@+id/editText2"
+android:layout_marginTop="30dp" />
+<!-- text Views for label -->
+<TextView
+android:id="@+id/textView1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignBaseline="@+id/editText1"
+android:layout_alignBottom="@+id/editText1"
+android:layout_alignParentLeft="true"
+android:text="Send To:"
+android:textColor="#0F9D58" />
+<TextView
+android:id="@+id/textView2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignBaseline="@+id/editText2"
+android:layout_alignBottom="@+id/editText2"
+android:layout_alignParentLeft="true"
+android:text="Email Subject:"
+android:textColor="#0F9D58" />
+<TextView
+android:id="@+id/textView3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignBaseline="@+id/editText3"
+android:layout_alignBottom="@+id/editText3"
+android:text="Email Body:"
+android:textColor="#0F9D58" />
+<!-- Button to send email -->
+<Button
+android:id="@+id/button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@+id/editText3"
+android:layout_alignLeft="@+id/editText3"
+android:layout_marginLeft="76dp"
+android:layout_marginTop="20dp"
+android:text="Send email!!" />
+</RelativeLayout>
+JAVA:
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+// define objects for edit text and button
+Button button;
+EditText sendto, subject, body;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+// Getting instance of edittext and button
+sendto = findViewById(R.id.editText1);
+subject = findViewById(R.id.editText2);
+body = findViewById(R.id.editText3);
+button = findViewById(R.id.button);
+// attach setOnClickListener to button with Intent object define in it
+button.setOnClickListener(view -> {
+String emailsend = sendto.getText().toString();
+String emailsubject = subject.getText().toString();
+String emailbody = body.getText().toString();
+// define Intent object with action attribute as
+ACTION_SEND
+Intent intent = new Intent(Intent.ACTION_SEND);
+// add three fields to intent using putExtra function
+intent.putExtra(Intent.EXTRA_EMAIL, new
+String[]{emailsend});
+intent.putExtra(Intent.EXTRA_SUBJECT, emailsubject);
+intent.putExtra(Intent.EXTRA_TEXT, emailbody);
+// set type of intent
+intent.setType("message/rfc822");
+// startActivity with intent with chooser as Email client using
+createChooser function
+startActivity(Intent.createChooser(intent, "Choose an Email
+client :"));
+});
+}
+}
+30.Design following-add a border to an Android Layout.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#000000"
+tools:context="com.example.layoutborder.MainActivity"
+android:padding="10dp">
+<LinearLayout
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/customborder">
+<TextView
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:text="Hello World!"
+android:background="#A00000FF"
+android:gravity="center_vertical|center_horizontal"
+android:textColor="#ffffff"
+android:textSize="40sp" />
+</LinearLayout>
+</RelativeLayout>
+DRAWABLE FILE
+?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+android:shape="rectangle">
+<corners android:radius="20dp"/>
+<padding android:left="20dp" android:right="20dp"
+android:top="20dp" android:bottom="20dp"/>
+<solid android:color="#CCCCCC"/>
+</shape>
+30.Create simple application with Login Screen. On successful login,
+gives message go tonext
+Activity (Without Using Database).
+XML:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".HomeActivity">
+<!--text view for displaying heading-->
+<TextView
+android:id="@+id/idTVHeader"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_centerInParent="true"
+android:gravity="center_horizontal"
+android:text="Welcome back again to Geeks for Geeks"
+android:textAlignment="center"
+android:textColor="@color/purple_700"
+android:textSize="18sp" />
+<!--text view for displaying user name-->
+<TextView
+android:id="@+id/idTVUserName"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_below="@id/idTVHeader"
+android:layout_centerInParent="true"
+android:layout_marginTop="20dp"
+android:gravity="center_horizontal"
+android:text="UserName"
+android:textAlignment="center"
+android:textColor="@color/purple_700"
+android:textSize="25sp" />
+<!--button for making user log out-->
+<Button
+android:id="@+id/idBtnLogout"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@id/idTVUserName"
+android:layout_centerInParent="true"
+android:layout_marginTop="10dp"
+android:text="LogOut"
+android:textAllCaps="false" />
+</RelativeLayout>
+JAVA:
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import com.parse.ParseUser;
+public class HomeActivity extends AppCompatActivity {
+// creating a variable
+// for our text view..
+private TextView userNameTV;
+// button for logout
+private Button logoutBtn;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_home);
+logoutBtn = findViewById(R.id.idBtnLogout);
+// initializing our variables
+userNameTV = findViewById(R.id.idTVUserName);
+// getting data from intent.
+String name = getIntent().getStringExtra("username");
+// setting data to our text view.
+userNameTV.setText(name);
+// initializing click listener for logout button
+logoutBtn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+// calling a method to logout our user.
+ParseUser.logOutInBackground(e -> {
+if (e == null) {
+Toast.makeText(HomeActivity.this, "User
+Logged Out", Toast.LENGTH_SHORT).show();
+Intent i = new Intent(HomeActivity.this,
+MainActivity.class);
+startActivity(i);
+finish();
+}
+});
+}
+});
+}
+}
+Mainactivity.java
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import com.parse.ParseUser;
+public class MainActivity extends AppCompatActivity {
+// creating variables for our edit text and buttons.
+private EditText userNameEdt, passwordEdt;
+private Button loginBtn;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+// initializing our edit text and buttons.
+userNameEdt = findViewById(R.id.idEdtUserName);
+passwordEdt = findViewById(R.id.idEdtPassword);
+loginBtn = findViewById(R.id.idBtnLogin);
+// adding on click listener for our button.
+loginBtn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+// on below line we are getting data from our edit
+text.
+String userName =
+userNameEdt.getText().toString();
+String password =
+passwordEdt.getText().toString();
+// checking if the entered text is empty or not.
+if (TextUtils.isEmpty(userName) &&
+TextUtils.isEmpty(password)) {
+Toast.makeText(MainActivity.this, "Please
+enter user name and password", Toast.LENGTH_SHORT).show();
+}
+// calling a method to login our user.
+loginUser(userName, password);
+}
+});
+}
+private void loginUser(String userName, String password) {
+// calling a method to login a user.
+ParseUser.logInInBackground(userName, password,
+(parseUser, e) -> {
+// after login checking if the user is null or not.
+if (parseUser != null) {
+// if the user is not null then we will display a
+toast message
+// with user login and passing that user to new
+activity.
+Toast.makeText(this, "Login Successful ",
+Toast.LENGTH_SHORT).show();
+Intent i = new Intent(MainActivity.this,
+HomeActivity.class);
+i.putExtra("username", userName);
+startActivity(i);
+} else {
+// display a toast message when user logout of
+the app.
+ParseUser.logOut();
+Toast.makeText(MainActivity.this,
+e.getMessage(), Toast.LENGTH_LONG).show();
+}
+});
+}
+}
+31.Create a simple calculator
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#8BC34A"
+android:backgroundTint="@android:color/darker_gray"
+tools:context=".MainActivity">
+<!-- Text View to display our basic heading of "calculator"-->
+<TextView
+android:layout_width="194dp"
+android:layout_height="43dp"
+android:layout_marginStart="114dp"
+android:layout_marginLeft="114dp"
+android:layout_marginTop="58dp"
+android:layout_marginEnd="103dp"
+android:layout_marginRight="103dp"
+android:layout_marginBottom="502dp"
+android:scrollbarSize="30dp"
+android:text=" Calculator"
+android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+android:textSize="30dp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<!-- Edit Text View to input the values -->
+<EditText
+android:id="@+id/num1"
+android:layout_width="364dp"
+android:layout_height="28dp"
+android:layout_marginStart="72dp"
+android:layout_marginTop="70dp"
+android:layout_marginEnd="71dp"
+android:layout_marginBottom="416dp"
+android:background="@android:color/white"
+android:ems="10"
+android:onClick="clearTextNum1"
+android:inputType="number"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<!-- Edit Text View to input 2nd value-->
+<EditText
+android:id="@+id/num2"
+android:layout_width="363dp"
+android:layout_height="30dp"
+android:layout_marginStart="72dp"
+android:layout_marginTop="112dp"
+android:layout_marginEnd="71dp"
+android:layout_marginBottom="374dp"
+android:background="@android:color/white"
+android:ems="10"
+android:onClick="clearTextNum2"
+android:inputType="number"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<!-- Text View to display result -->
+<TextView
+android:id="@+id/result"
+android:layout_width="356dp"
+android:layout_height="71dp"
+android:layout_marginStart="41dp"
+android:layout_marginTop="151dp"
+android:layout_marginEnd="48dp"
+android:layout_marginBottom="287dp"
+android:background="@android:color/white"
+android:text="result"
+android:textColorLink="#673AB7"
+android:textSize="25sp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<!-- A button to perform 'sum' operation -->
+<Button
+android:id="@+id/sum"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="16dp"
+android:layout_marginTop="292dp"
+android:layout_marginEnd="307dp"
+android:layout_marginBottom="263dp"
+android:backgroundTint="@android:color/holo_red_light"
+android:onClick="doSum"
+android:text="+"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<!-- A button to perform subtraction operation. -->
+<!-- A button to perform division. -->
+<Button
+android:id="@+id/sub"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="210dp"
+android:layout_marginTop="292dp"
+android:layout_marginEnd="113dp"
+android:layout_marginBottom="263dp"
+android:backgroundTint="@android:color/holo_red_light"
+android:onClick="doSub"
+android:text="-"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="1.0"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.507" />
+<Button
+android:id="@+id/div"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="307dp"
+android:layout_marginTop="292dp"
+android:layout_marginEnd="16dp"
+android:layout_marginBottom="263dp"
+android:backgroundTint="@android:color/holo_red_light"
+android:onClick="doDiv"
+android:text="/"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.0"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<!-- A button to perform multiplication. -->
+<Button
+android:id="@+id/mul"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="16dp"
+android:layout_marginTop="356dp"
+android:layout_marginEnd="307dp"
+android:layout_marginBottom="199dp"
+android:backgroundTint="@android:color/holo_red_light"
+android:onClick="doMul"
+android:text="x"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<!-- A button to perform a modulus function. -->
+<!-- A button to perform a power function. -->
+<Button
+android:id="@+id/button"
+android:layout_width="103dp"
+android:layout_height="46dp"
+android:layout_marginStart="113dp"
+android:layout_marginTop="356dp"
+android:layout_marginEnd="206dp"
+android:layout_marginBottom="199dp"
+android:backgroundTint="@android:color/holo_red_light"
+android:onClick="doMod"
+android:text="%(mod)"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.515" />
+<Button
+android:id="@+id/pow"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="113dp"
+android:layout_marginTop="292dp"
+android:layout_marginEnd="210dp"
+android:layout_marginBottom="263dp"
+android:backgroundTint="@android:color/holo_red_light"
+android:onClick="doPow"
+android:text="n1^n2"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.0"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.507" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+Java:
+package com.example.calculator2;
+import android.os.Bundle;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import com.example.calculator2.databinding.ActivityMainBinding;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+private AppBarConfiguration appBarConfiguration;
+private ActivityMainBinding binding;
+public EditText e1, e2;
+TextView t1;
+int num1, num2;
+public boolean getNumbers() {
+//checkAndClear();
+// defining the edit text 1 to e1
+e1 = (EditText) findViewById(R.id.num1);
+// defining the edit text 2 to e2
+e2 = (EditText) findViewById(R.id.num2);
+// defining the text view to t1
+t1 = (TextView) findViewById(R.id.result);
+// taking input from text box 1
+String s1 = e1.getText().toString();
+// taking input from text box 2
+String s2 = e2.getText().toString();
+if(s1.equals("Please enter value 1") && s2.equals(null))
+{
+String result = "Please enter value 2";
+e2.setText(result);
+return false;
+}
+if(s1.equals(null) && s2.equals("Please enter value 2"))
+{
+String result = "Please enter value 1";
+e1.setText(result);
+return false;
+}
+if(s1.equals("Please enter value 1") || s2.equals("Please enter
+value 2"))
+{
+return false;
+}
+if((!s1.equals(null) && s2.equals(null))|| (!s1.equals("") &&
+s2.equals("")) ){
+String result = "Please enter value 2";
+e2.setText(result);
+return false;
+}
+if((s1.equals(null) && !s2.equals(null))|| (s1.equals("") &&
+!s2.equals("")) ){
+//checkAndClear();
+String result = "Please enter value 1";
+e1.setText(result);
+return false;
+}
+if((s1.equals(null) && s2.equals(null))|| (s1.equals("") &&
+s2.equals("")) ){
+//checkAndClear();
+String result1 = "Please enter value 1";
+e1.setText(result1);
+String result2 = "Please enter value 2";
+e2.setText(result2);
+return false;
+}
+else {
+// converting string to int.
+num1 = Integer.parseInt(s1);
+// converting string to int.
+num2 = Integer.parseInt(s2);
+}
+return true;
+}
+public void doSum(View v) {
+// get the input numbers
+if (getNumbers()) {
+int sum = num1 + num2;
+t1.setText(Integer.toString(sum));
+}
+else
+{
+t1.setText("Error Please enter Required Values");
+}
+}
+public void clearTextNum1(View v) {
+// get the input numbers
+e1.getText().clear();
+}
+public void clearTextNum2(View v) {
+// get the input numbers
+e2.getText().clear();
+}
+public void doPow(View v) {
+//checkAndClear();
+// get the input numbers
+if (getNumbers()) {
+double sum = Math.pow(num1, num2);
+t1.setText(Double.toString(sum));
+}
+else
+{
+t1.setText("Error Please enter Required Values");
+}
+}
+// a public method to perform subtraction
+public void doSub(View v) {
+//checkAndClear();
+// get the input numbers
+if (getNumbers()) {
+int sum = num1 - num2;
+t1.setText(Integer.toString(sum));
+}
+else
+{
+t1.setText("Error Please enter Required Values");
+}
+}
+// a public method to perform multiplication
+public void doMul(View v) {
+//checkAndClear();
+// get the input numbers
+if (getNumbers()) {
+int sum = num1 * num2;
+t1.setText(Integer.toString(sum));
+}
+else
+{
+t1.setText("Error Please enter Required Values");
+}
+}
+// a public method to perform Division
+public void doDiv(View v) {
+//checkAndClear();
+// get the input numbers
+if (getNumbers()) {
+// displaying the text in text view assigned as t1
+double sum = num1 / (num2 * 1.0);
+t1.setText(Double.toString(sum));
+}
+else
+{
+t1.setText("Error Please enter Required Values");
+}
+}
+// a public method to perform modulus function
+public void doMod(View v) {
+//checkAndClear();
+// get the input numbers
+if (getNumbers()) {
+double sum = num1 % num2;
+t1.setText(Double.toString(sum));
+}
+else
+{
+t1.setText("Error Please enter Required Values");
+}
+}
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+e1 = (EditText) findViewById(R.id.num1);
+// defining the edit text 2 to e2
+e2 = (EditText) findViewById(R.id.num2);
+}
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+// Inflate the menu; this adds items to the action bar if it is present.
+getMenuInflater().inflate(R.menu.menu_main, menu);
+return true;
+}
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+// Handle action bar item clicks here. The action bar will
+// automatically handle clicks on the Home/Up button, so long
+// as you specify a parent activity in AndroidManifest.xml.
+int id = item.getItemId();
+//noinspection SimplifiableIfStatement
+if (id == R.id.action_settings) {
+return true;
+}
+return super.onOptionsItemSelected(item);
+}
+@Override
+public boolean onSupportNavigateUp() {
+NavController navController = Navigation.findNavController(this,
+R.id.nav_host_fragment_content_main);
+return NavigationUI.navigateUp(navController,
+appBarConfiguration)
+|| super.onSupportNavigateUp();
+}
+}
+31.send sms
+package com.example.tutorialspoint;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.app.Activity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.telephony.SmsManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+public class MainActivity extends Activity {
+private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
+Button sendBtn;
+EditText txtphoneNo;
+EditText txtMessage;
+String phoneNo;
+String message;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+sendBtn = (Button) findViewById(R.id.btnSendSMS);
+txtphoneNo = (EditText) findViewById(R.id.editText);
+txtMessage = (EditText) findViewById(R.id.editText2);
+sendBtn.setOnClickListener(new View.OnClickListener() {
+public void onClick(View view) {
+sendSMSMessage();
+}
+});
+}
+protected void sendSMSMessage() {
+phoneNo = txtphoneNo.getText().toString();
+message = txtMessage.getText().toString();
+if (ContextCompat.checkSelfPermission(this,
+Manifest.permission.SEND_SMS)
+!= PackageManager.PERMISSION_GRANTED) {
+if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+Manifest.permission.SEND_SMS)) {
+} else {
+ActivityCompat.requestPermissions(this,
+new String[]{Manifest.permission.SEND_SMS},
+MY_PERMISSIONS_REQUEST_SEND_SMS);
+}
+}
+}
+@Override
+public void onRequestPermissionsResult(int requestCode,String permissions[], int[]
+grantResults) {
+switch (requestCode) {
+case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+if (grantResults.length > 0
+&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+SmsManager smsManager = SmsManager.getDefault();
+smsManager.sendTextMessage(phoneNo, null, message, null, null);
+Toast.makeText(getApplicationContext(), "SMS sent.",
+Toast.LENGTH_LONG).show();
+} else {
+Toast.makeText(getApplicationContext(),
+"SMS faild, please try again.", Toast.LENGTH_LONG).show();
+return;
+}
+}
+}
+}
+}
+Following will be the content of res/layout/activity_main.xml file −
+Here abc indicates about tutorialspoint logo
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+tools:context="MainActivity">
+<TextView
+android:id="@+id/textView1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Sending SMS Example"
+android:layout_alignParentTop="true"
+android:layout_centerHorizontal="true"
+android:textSize="30dp" />
+<TextView
+android:id="@+id/textView2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Tutorials point "
+android:textColor="#ff87ff09"
+android:textSize="30dp"
+android:layout_below="@+id/textView1"
+android:layout_alignRight="@+id/imageButton"
+android:layout_alignEnd="@+id/imageButton" />
+<ImageButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/imageButton"
+android:src="@drawable/abc"
+android:layout_below="@+id/textView2"
+android:layout_centerHorizontal="true" />
+<EditText
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/editText"
+android:hint="Enter Phone Number"
+android:phoneNumber="true"
+android:textColorHint="@color/abc_primary_text_material_dark"
+android:layout_below="@+id/imageButton"
+android:layout_centerHorizontal="true" />
+<EditText
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/editText2"
+android:layout_below="@+id/editText"
+android:layout_alignLeft="@+id/editText"
+android:layout_alignStart="@+id/editText"
+android:textColorHint="@color/abc_primary_text_material_dark"
+android:layout_alignRight="@+id/imageButton"
+android:layout_alignEnd="@+id/imageButton"
+android:hint="Enter SMS" />
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Send Sms"
+android:id="@+id/btnSendSMS"
+android:layout_below="@+id/editText2"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="48dp" />
+</RelativeLayout>
+Following will be the content of res/values/strings.xml to define two new constants
+−
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">tutorialspoint</string>
+</resources>
+Following is the default content of AndroidManifest.xml −
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.tutorialspoint" >
+<uses-permission android:name="android.permission.SEND_SMS" />
+<application
+android:allowBackup="true"
+android:icon="@drawable/ic_launcher"
+android:label="@string/app_name"
+android:theme="@style/AppTheme" >
+<activity
+android:name="com.example.tutorialspoint.MainActivity"
+android:label="@string/app_name" >
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+32.WAP to change the image on te screen
+package com.example.changeiamge;
+import android.app.Activity;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.renderscript.Type;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
+public class MainActivity extends Activity implements OnCheckedChangeListener {
+RadioGroup group1, group2;
+Button gen;
+ImageView img;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+// TODO Auto-generated method stub
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+group1 = (RadioGroup) findViewById(R.id.rg1);
+group1.setOnCheckedChangeListener((OnCheckedChangeListener) this);
+group2 = (RadioGroup) findViewById(R.id.rg2);
+group2.setOnCheckedChangeListener((OnCheckedChangeListener) this);
+img = (ImageView) findViewById(R.id.imageView1);
+// oncheckedChanged function
+gen = (Button) findViewById(R.id.button1);
+gen.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+// TODO Auto-generated method stub
+}
+});
+}
+@Override
+public void onCheckedChanged(RadioGroup group, int checkedId) {
+// TODO Auto-generated method stub
+switch (checkedId) {
+case R.id.radioButton1:
+img.setImageResource(R.drawable.image4);
+break;
+case R.id.radioButton2:
+img.setImageResource(R.drawable.image5);
+break;
+case R.id.radioButton3:
+img.setImageResource(R.drawable.image6);
+break;
+case R.id.radioButton4:
+img.setImageResource(R.drawable.image7);
+break;
+default:
+break;
+}
+}
+}
+ActivityMain.xml
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+tools:context=".MainActivity" >
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:paddingBottom="40px"
+android:weightSum="2" >
+<RadioGroup
+android:id="@+id/rg1"
+android:layout_width="wrap_content"
+android:layout_height="match_parent"
+android:layout_weight="1"
+android:orientation="vertical" >
+<RadioButton
+android:id="@+id/radioButton1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentRight="true"
+android:layout_alignParentTop="true"
+android:layout_marginTop="20dp"
+android:text="Image2" />
+<RadioButton
+android:id="@+id/radioButton2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignBaseline="@+id/radioButton1"
+android:layout_alignBottom="@+id/radioButton1"
+android:layout_alignParentLeft="true"
+android:text="Image1" />
+</RadioGroup>
+<RadioGroup
+android:id="@+id/rg2"
+android:layout_width="wrap_content"
+android:layout_height="match_parent"
+android:layout_weight="1"
+android:orientation="vertical" >
+<RadioButton
+android:id="@+id/radioButton3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="30dp"
+android:text="Image3" />
+<RadioButton
+android:id="@+id/radioButton4"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignBaseline="@+id/radioButton3"
+android:layout_alignBottom="@+id/radioButton3"
+android:layout_alignParentRight="true"
+android:text="Image4" />
+</RadioGroup>
+</LinearLayout>
+<Button
+android:id="@+id/button1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentLeft="true"
+android:layout_alignParentRight="true"
+android:layout_centerVertical="true"
+android:text="Change Image" />
+<ImageView
+android:id="@+id/imageView1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignLeft="@+id/button1"
+android:layout_alignParentBottom="true"
+android:layout_alignParentRight="true"
+android:layout_below="@+id/button1"
+android:layout_marginTop="50dp"
+android:src="@drawable/ic_launcher" />
+</RelativeLayout>
+33.Demonstrate Options Menu, Context Menu and Popup Menu in android.
